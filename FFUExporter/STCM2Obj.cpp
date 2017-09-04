@@ -70,8 +70,11 @@ bool STCM2Store::LoadFromBuffer( const void* buf, unsigned int size )
                 if (nakecode->opcode_or_offset == SET_SPEAKERNAME && intext == false) {
                     // bug
                     qDebug() << QString("double take name opcode at %1").arg(oppos, 8, 16, QLatin1Char('0'));
-                    // finish this one and wait real one
                     fDialogs.push_back(text);
+                    // finish this one and wait real one
+                    //oppos -= opsize; // sub wrong size and come back after break (oppos += opsize, opID++)
+                    opsize = 0; // more buggy
+                    opID--;
                     break;
                 } else if (nakecode->opcode_or_offset == ADD_DIALOGUE) {
                     intext = true;
@@ -116,7 +119,7 @@ bool STCM2Store::LoadFromBuffer( const void* buf, unsigned int size )
 
 bool STCM2Store::SaveToBuffer( QByteArray& buf )
 {
-    int index = 0;
+    int index = 1;
     if (fScriptType == stScenario) {
         buf.append(QString("// %1 dialogue\r\n").arg(fDialogs.size()));
         for (DialogVec::const_iterator it = fDialogs.begin(); it != fDialogs.end(); it++, index++) {
