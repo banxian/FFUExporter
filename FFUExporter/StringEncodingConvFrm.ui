@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TEncodingConvFrm</class>
+ <widget class="QWidget" name="TEncodingConvFrm">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>351</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>String Encoding Converter</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="4" column="0" colspan="2">
+    <widget class="QCheckBox" name="bigendianChk">
+     <property name="text">
+      <string>Bigendian</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="2">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="5" column="0" colspan="4">
+    <widget class="QSplitter" name="splitter">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <widget class="QTextEdit" name="unicodeEdt">
+      <property name="font">
+       <font>
+        <family>MS Mincho</family>
+        <pointsize>9</pointsize>
+       </font>
+      </property>
+     </widget>
+     <widget class="QTextEdit" name="hexView">
+      <property name="font">
+       <font>
+        <family>Consolas</family>
+        <pointsize>9</pointsize>
+       </font>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </widget>
+   </item>
+   <item row="6" column="0" colspan="4">
+    <widget class="QFrame" name="frame">
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Plain</enum>
+     </property>
+     <property name="lineWidth">
+      <number>0</number>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <property name="margin">
+       <number>0</number>
+      </property>
+      <item row="1" column="2">
+       <widget class="QPushButton" name="utf16tos2312Btn">
+        <property name="text">
+         <string>UTF16 to Shift2312</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QPushButton" name="s2312toutf16Btn">
+        <property name="text">
+         <string>Shift2312 to UTF16</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="3">
+    <widget class="QPushButton" name="loadTableBtn">
+     <property name="text">
+      <string>Load Tables</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <layout class="QGridLayout" name="gridLayout_3">
+     <item row="0" column="1">
+      <widget class="QLabel" name="s2312mapcountView">
+       <property name="text">
+        <string>10017</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>ps kanji:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLabel" name="psmapcountView">
+       <property name="text">
+        <string>6777</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>standard glyph:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QLabel" name="stdglyphcountView">
+       <property name="text">
+        <string>155</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>max s2312 kanji:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>unicodeEdt</sender>
+   <signal>textChanged()</signal>
+   <receiver>TEncodingConvFrm</receiver>
+   <slot>onStringValueModified()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>199</x>
+     <y>99</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>loadTableBtn</sender>
+   <signal>clicked()</signal>
+   <receiver>TEncodingConvFrm</receiver>
+   <slot>onLoadTableClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>353</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>bigendianChk</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>TEncodingConvFrm</receiver>
+   <slot>onStringValueModified()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>56</x>
+     <y>46</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>utf16tos2312Btn</sender>
+   <signal>clicked()</signal>
+   <receiver>TEncodingConvFrm</receiver>
+   <slot>onUTF16toShift2312Clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>340</x>
+     <y>330</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>175</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>s2312toutf16Btn</sender>
+   <signal>clicked()</signal>
+   <receiver>TEncodingConvFrm</receiver>
+   <slot>onShift2312toUTF16Clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>233</x>
+     <y>330</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>175</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>onStringValueModified()</slot>
+  <slot>onLoadTableClicked()</slot>
+  <slot>onUTF16toShift2312Clicked()</slot>
+  <slot>onShift2312toUTF16Clicked()</slot>
+ </slots>
+</ui>
