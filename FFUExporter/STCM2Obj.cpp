@@ -238,7 +238,7 @@ bool STCM2Store::ParseNakedCodes( const void* buf, unsigned int size )
     int exportdatapos = header.export_offset?header.export_offset - sizeof("EXPORT_DATA"):size;
     int opsize;
 
-    std::map<int,int> IndexLinkMap, OffsetIDMap;
+    std::map<int,int> OffsetIDMap;
 
     for (int oppos = nakeoppos; oppos < exportdatapos; oppos += opsize) {
         STCM2InstructionHeader* nakecode = (STCM2InstructionHeader*)((char*)buf + oppos);
@@ -265,10 +265,6 @@ bool STCM2Store::ParseNakedCodes( const void* buf, unsigned int size )
                     paramex.linkedToID = false;
                     if (data->length && paramex.textInLocalPayload) {
                         // TODO: override operator =
-                        //paramex.data.type = data->type;
-                        //paramex.data.offset_unit = data->offset_unit;
-                        //paramex.data.field_8 = data->field_8;
-                        //paramex.data.length = data->length;
                         memcpy(&paramex.data.type, &data->type, sizeof(*data));
                         paramex.data.body.resize(data->length);
                         memcpy(&paramex.data.body[0], (char*)(data + 1), data->length);
@@ -339,6 +335,7 @@ bool STCM2Store::ParseNakedCodes( const void* buf, unsigned int size )
 
 bool STCM2Store::SaveToBuffer( QByteArray& buf )
 {
+    FixupOffsets();
     STCM2Header newheader = fHeader;
     QByteArray newcontent;
     newcontent.append((char*)&newheader, sizeof(newheader));
@@ -361,6 +358,42 @@ bool STCM2Store::SaveToBuffer( QByteArray& buf )
     }
 
     buf = newcontent;
+    return true;
+}
+
+bool STCM2Store::FixupOffsets()
+{
+    std::map<int,int> IDOffsetMap;
+
+    int oppos = sizeof(STCM2Header) + fHeaderExtra.size() + sizeof("CODE_START_");
+    int opsize;
+    for (CodeBundleVec::iterator it = fNakedCodes.begin(); it != fNakedCodes.end(); it++, oppos += opsize) {
+        opsize = sizeof(STCM2InstructionHeader) + it->code.param_count * sizeof(STCM2Parameter) + it->payload.size();
+        IDOffsetMap.insert(std::make_pair(it->codeID, oppos));
+    }
+
+    fHeader.export_offset = oppos + sizeof("EXPORT_DATA");
+
+    for (CodeBundleVec::iterator it = fNakedCodes.begin(); it != fNakedCodes.end(); it++) {
+        for (ParameterExVec::iterator pit = it->params.begin(); pit != it->params.end(); pit++) {
+            if (pit->linkedToID) {
+                std::map<int,int>::const_iterator lit = IDOffsetMap.find(pit->linkedID);
+                if (lit != IDOffsetMap.end()) {
+                    pit->param_4 = lit->second;
+                }
+            }
+        }
+    }
+    for (ExportEntryExVec::iterator it = fExports.begin(); it != fExports.end(); it++) {
+        if (it->type == 0 && it->linkedToID) {
+            std::map<int,int>::const_iterator lit = IDOffsetMap.find(it->linkedID);
+            if (lit != IDOffsetMap.end()) {
+                it->offset = lit->second;
+            }
+
+        }
+    }
+
     return true;
 }
 

@@ -87,6 +87,7 @@ private:
     ScriptType QuickAnalyst(const void* buf, unsigned int size);
     bool ParseNakedCodes(const void* buf, unsigned int size);
     int GenerateID();
+    bool FixupOffsets();
 public:
     bool LoadFromBuffer(const void* buf, unsigned int size);
     bool ExportTranslationText(QByteArray& buf);
