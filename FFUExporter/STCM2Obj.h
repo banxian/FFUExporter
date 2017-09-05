@@ -6,6 +6,7 @@
 #include <vector>
 #include <map>
 #include <string>
+#include <qatomic.h>
 
 
 typedef std::vector < std::string > StringVec;
@@ -25,6 +26,42 @@ struct DialogBundle
 };
 
 typedef std::vector<DialogBundle> DialogVec;
+typedef std::vector<unsigned char> ByteVec;
+
+struct STCM2DataEx: STCM2Data
+{
+    ByteVec body;
+};
+
+struct STCM2ParameterEx: STCM2Parameter 
+{
+    // may have local data, but we only store 4BA/4BC's data? (other op use codebundle's payload as is)
+    STCM2DataEx data;
+    bool textInLocalPayload;
+    // or point to another op (by ID?)
+    bool linkedToID;
+    int linkedID;
+};
+
+typedef std::vector<STCM2ParameterEx> ParameterExVec;
+
+class CodeBundle {
+public:
+    STCM2InstructionHeader code;
+    int codeID;
+    ParameterExVec params;
+    ByteVec payload;
+};
+
+typedef std::vector<CodeBundle> CodeBundleVec;
+
+struct STCM2ExportEntryEx: STCM2ExportEntry
+{
+    bool linkedToID;
+    int linkedID;
+};
+
+typedef std::vector<STCM2ExportEntryEx> ExportEntryExVec;
 
 
 class STCM2Store
@@ -40,15 +77,21 @@ private:
         stEmpty
     };
     ScriptType fScriptType;
+    CodeBundleVec fNakedCodes;
+    ExportEntryExVec fExports;
+    QAtomicInt fInstID;
 public:
     STCM2Store(void);
     ~STCM2Store(void);
 private:
     ScriptType QuickAnalyst(const void* buf, unsigned int size);
+    bool ParseNakedCodes(const void* buf, unsigned int size);
+    int GenerateID();
 public:
     bool LoadFromBuffer(const void* buf, unsigned int size);
-    bool SaveToBuffer(QByteArray& buf);
+    bool ExportTranslationText(QByteArray& buf);
     bool ContainsDialog();
+    bool SaveToBuffer(QByteArray& buf);
 };
 
 uint32_t ExtractSTCM2ParamType(uint32_t x);

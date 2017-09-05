@@ -2,9 +2,10 @@
 #include "AddonFuncUnt.h"
 #include <string>
 #include <vector>
+#include <xutility>
 
 
-STCM2Store::STCM2Store(void)
+STCM2Store::STCM2Store(void) : fInstID(0)
 {
 }
 
@@ -22,6 +23,7 @@ bool STCM2Store::LoadFromBuffer( const void* buf, unsigned int size )
         return false;
     }
 
+    // TODO: store codestartpos
     const char* codestart = (char*)memmem(buf, size, "CODE_START_", sizeof("CODE_START_"));
     if (codestart == 0) {
         return false;
@@ -29,9 +31,10 @@ bool STCM2Store::LoadFromBuffer( const void* buf, unsigned int size )
 
     fScriptType = QuickAnalyst(buf, size);
 
+    ParseNakedCodes(buf, size);
+
     int codestartpos = codestart - (char*)buf;
 
-    fHeaderExtra = QByteArray::fromRawData((char*)buf + sizeof(STCM2Header), codestartpos - sizeof(STCM2Header));
 
     int nakeoppos = codestartpos + sizeof("CODE_START_");
     int exportdatapos = header.export_offset?header.export_offset - sizeof("EXPORT_DATA"):size;
@@ -113,23 +116,23 @@ bool STCM2Store::LoadFromBuffer( const void* buf, unsigned int size )
         }
     }
 
-    fHeader = header;
     return true;
 }
 
-bool STCM2Store::SaveToBuffer( QByteArray& buf )
+bool STCM2Store::ExportTranslationText( QByteArray& buf )
 {
     int index = 1;
+    int width = fDialogs.empty()?0:(floor(log10((double)max(fDialogs.back().nameID, fDialogs.back().textID)))+1);
     if (fScriptType == stScenario) {
         buf.append(QString("// %1 dialogue\r\n").arg(fDialogs.size()));
         for (DialogVec::const_iterator it = fDialogs.begin(); it != fDialogs.end(); it++, index++) {
             if (it->hasname) {
-                buf.append(QString(";=================== %1: NAME%2\r\n").arg(it->nameID).arg(index));
+                buf.append(QString(";=================== %1: NAME%2\r\n").arg(it->nameID, width, 10, QLatin1Char('0')).arg(index));
                 buf.append(it->name.c_str());
                 buf.append("\r\n");
             }
             if (it->hastext) {
-                buf.append(QString(";=================== %1: TEXTS%2[%3]\r\n").arg(it->textID).arg(index).arg(it->texts.size()));
+                buf.append(QString(";=================== %1: TEXTS%2[%3]\r\n").arg(it->textID, width, 10, QLatin1Char('0')).arg(index).arg(it->texts.size()));
                 for (StringVec::const_iterator sit = it->texts.begin(); sit != it->texts.end(); sit++) {
                     if (sit!=it->texts.begin()) {
                         buf.append("\\n");
@@ -149,12 +152,12 @@ bool STCM2Store::SaveToBuffer( QByteArray& buf )
         buf.append(QString("// %1 records\r\n").arg(fDialogs.size()));
         for (DialogVec::const_iterator it = fDialogs.begin(); it != fDialogs.end(); it++, index++) {
             if (it->hasname) {
-                buf.append(QString(";=================== %1: NAME%2\r\n").arg(it->nameID).arg(index));
+                buf.append(QString(";=================== %1: NAME%2\r\n").arg(it->nameID, width, 10, QLatin1Char('0')).arg(index));
                 buf.append(it->name.c_str());
                 buf.append("\r\n");
             }
             if (it->hastext) {
-                buf.append(QString(";=================== %1: TEXT%3\r\n").arg(it->nameID).arg(index));
+                buf.append(QString(";=================== %1: TEXT%3\r\n").arg(it->nameID, width, 10, QLatin1Char('0')).arg(index));
                 StringVec::const_iterator sit = it->texts.begin();
                 if (sit != it->texts.end()){
                     buf.append(sit->c_str());
@@ -216,6 +219,156 @@ STCM2Store::ScriptType STCM2Store::QuickAnalyst(const void* buf, unsigned int si
         return stEmpty;
     }
     return stStorage;
+}
+
+bool STCM2Store::ParseNakedCodes( const void* buf, unsigned int size )
+{
+    STCM2Header header = *(STCM2Header*)buf;
+
+    const char* codestart = (char*)memmem(buf, size, "CODE_START_", sizeof("CODE_START_"));
+    if (codestart == 0) {
+        return false;
+    }
+
+    int codestartpos = codestart - (char*)buf;
+
+    fHeaderExtra = QByteArray::fromRawData((char*)buf + sizeof(STCM2Header), codestartpos - sizeof(STCM2Header));
+
+    int nakeoppos = codestartpos + sizeof("CODE_START_");
+    int exportdatapos = header.export_offset?header.export_offset - sizeof("EXPORT_DATA"):size;
+    int opsize;
+
+    std::map<int,int> IndexLinkMap, OffsetIDMap;
+
+    for (int oppos = nakeoppos; oppos < exportdatapos; oppos += opsize) {
+        STCM2InstructionHeader* nakecode = (STCM2InstructionHeader*)((char*)buf + oppos);
+        opsize = nakecode->size;
+        int payloadsize = nakecode->size - sizeof(STCM2InstructionHeader) - nakecode->param_count * sizeof(STCM2Parameter);
+
+        CodeBundle code;
+        code.codeID = GenerateID();
+        code.code = *nakecode;
+        OffsetIDMap.insert(std::make_pair(oppos, code.codeID));
+
+        if (nakecode->is_call == 0) {
+            if (payloadsize && (nakecode->param_count == 1) && (nakecode->opcode_or_offset == SET_SPEAKERNAME || nakecode->opcode_or_offset == ADD_DIALOGUE)) {
+                const STCM2Parameter* param = (STCM2Parameter*)(nakecode + 1);
+                uint32_t pt = ExtractSTCM2ParamType(param->param_0);
+                if (pt != MEM_OFFSET) {
+                    // error!
+                    qDebug() << QString("param is not file offset at %1").arg(oppos, 8, 16, QLatin1Char('0'));
+                } else {
+                    const STCM2Data* data = (STCM2Data*)((char*)buf + ExtractSTCM2ParamValue(param->param_0));
+                    STCM2ParameterEx paramex;
+                    memcpy(&paramex.param_0, &param->param_0, sizeof(*param));
+                    paramex.textInLocalPayload = ((STCM2Parameter*)data == (param + 1));
+                    paramex.linkedToID = false;
+                    if (data->length && paramex.textInLocalPayload) {
+                        // TODO: override operator =
+                        //paramex.data.type = data->type;
+                        //paramex.data.offset_unit = data->offset_unit;
+                        //paramex.data.field_8 = data->field_8;
+                        //paramex.data.length = data->length;
+                        memcpy(&paramex.data.type, &data->type, sizeof(*data));
+                        paramex.data.body.resize(data->length);
+                        memcpy(&paramex.data.body[0], (char*)(data + 1), data->length);
+                    }
+                    code.params.push_back(paramex);
+                }
+            }
+        }
+        if (nakecode->param_count && code.params.empty()) {
+            const STCM2Parameter* param = (STCM2Parameter*)(nakecode + 1);
+            const STCM2Parameter* paramend = param + nakecode->param_count;
+            for (;param<paramend;param++) {
+                if (param->param_0 == COLL_LINK) {
+                    qDebug() << QString("Found Collection link belong to code: %1").arg(oppos, 8, 16, QLatin1Char('0'));
+                }
+
+                STCM2ParameterEx paramex;
+                memcpy(&paramex.param_0, &param->param_0, sizeof(*param));
+                paramex.textInLocalPayload = false;
+                paramex.linkedToID = false;
+                code.params.push_back(paramex);
+            }
+        }
+        if (payloadsize) {
+            code.payload.resize(payloadsize);
+            memcpy(&code.payload[0], ((STCM2Parameter*)(nakecode + 1) + nakecode->param_count), payloadsize);
+        }
+        fNakedCodes.push_back(code);
+    }
+    for (CodeBundleVec::iterator it = fNakedCodes.begin(); it != fNakedCodes.end(); it++) {
+        for (ParameterExVec::iterator pit = it->params.begin(); pit != it->params.end(); pit++) {
+            uint32_t pt = ExtractSTCM2ParamType(pit->param_0);
+            if (pt == SPECIAL) {
+                if (pit->param_0 == INSTR_PTR0 || pit->param_0 == INSTR_PTR1) {
+                    // TODO: store map and??
+                    std::map<int, int>::const_iterator lit = OffsetIDMap.find(pit->param_4);
+                    if (lit != OffsetIDMap.end()) {
+                        pit->linkedToID = true;
+                        pit->linkedID = lit->second;
+                    }
+                }
+                if (pit->param_0 == COLL_LINK) {
+                }
+            }
+        }
+    }
+    if (header.export_count && header.export_offset) {
+        STCM2ExportEntry* expent = (STCM2ExportEntry*)((char*)buf + header.export_offset);
+        for (int i = 0; i < header.export_count; expent++, i++){
+            STCM2ExportEntryEx expentex;
+            memcpy(&expentex.type, &expent->type, sizeof(*expent));
+            expentex.linkedToID = false;
+            if (expent->type == 0) {
+                std::map<int, int>::const_iterator lit = OffsetIDMap.find(expent->offset);
+                if (lit != OffsetIDMap.end()) {
+                    expentex.linkedToID = true;
+                    expentex.linkedID = lit->second;
+                }
+            }
+            fExports.push_back(expentex);
+        }
+    }
+    fHeader = header;
+
+    return true;
+}
+
+
+bool STCM2Store::SaveToBuffer( QByteArray& buf )
+{
+    STCM2Header newheader = fHeader;
+    QByteArray newcontent;
+    newcontent.append((char*)&newheader, sizeof(newheader));
+    newcontent.append(fHeaderExtra);
+    newcontent.append("CODE_START_");
+    newcontent.append((char)0);
+    for (CodeBundleVec::iterator it = fNakedCodes.begin(); it != fNakedCodes.end(); it++) {
+        newcontent.append((char*)&it->code, sizeof(it->code));
+        for (ParameterExVec::iterator pit = it->params.begin(); pit != it->params.end(); pit++) {
+            newcontent.append((char*)&pit->param_0, sizeof(STCM2Parameter));
+        }
+        if (it->payload.empty() == false) {
+            newcontent.append((char*)&it->payload[0], it->payload.size());
+        }
+    }
+    newcontent.append("EXPORT_DATA");
+    newcontent.append((char)0);
+    for (ExportEntryExVec::iterator it = fExports.begin(); it != fExports.end(); it++) {
+        newcontent.append((char*)&it->type, sizeof(STCM2ExportEntry));
+    }
+
+    buf = newcontent;
+    return true;
+}
+
+
+int STCM2Store::GenerateID()
+{
+    // TODO: lock
+    return fInstID.fetchAndAddOrdered(1) + 1;
 }
 
 bool extractpayload( STCM2InstructionHeader* nakecode, const void* buf, int payloadsize, std::string& field, bool* hasfield, const QString& errmsg )

@@ -7,33 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>351</height>
+    <height>397</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>String Encoding Converter</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="4" column="0" colspan="2">
-    <widget class="QCheckBox" name="bigendianChk">
-     <property name="text">
-      <string>Bigendian</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="2">
-    <spacer name="horizontalSpacer">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>40</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
    <item row="5" column="0" colspan="4">
     <widget class="QSplitter" name="splitter">
      <property name="orientation">
@@ -112,6 +92,26 @@
      </property>
     </widget>
    </item>
+   <item row="4" column="0" colspan="2">
+    <widget class="QCheckBox" name="bigendianChk">
+     <property name="text">
+      <string>Bigendian Shift2312</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="2">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
    <item row="1" column="0">
     <layout class="QGridLayout" name="gridLayout_3">
      <item row="0" column="1">
@@ -172,6 +172,13 @@
       </widget>
      </item>
     </layout>
+   </item>
+   <item row="7" column="3">
+    <widget class="QPushButton" name="mergeSTCM2Btn">
+     <property name="text">
+      <string>Writeback STCM2 File</string>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>
@@ -257,11 +264,28 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>mergeSTCM2Btn</sender>
+   <signal>clicked()</signal>
+   <receiver>TEncodingConvFrm</receiver>
+   <slot>onMergeSTCM2Clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>335</x>
+     <y>376</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>198</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>onStringValueModified()</slot>
   <slot>onLoadTableClicked()</slot>
   <slot>onUTF16toShift2312Clicked()</slot>
   <slot>onShift2312toUTF16Clicked()</slot>
+  <slot>onMergeSTCM2Clicked()</slot>
  </slots>
 </ui>

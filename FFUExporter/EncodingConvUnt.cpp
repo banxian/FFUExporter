@@ -4,6 +4,7 @@
 #include <utility>
 #include "AddonFuncUnt.h"
 #include "DbCentre.h"
+#include "STCM2Obj.h"
 
 
 using std::make_pair;
@@ -271,6 +272,44 @@ void TEncodingConvFrm::onShift32toUTF16Clicked()
 {
 
 }
+
+void TEncodingConvFrm::onMergeSTCM2Clicked()
+{
+    QString stcm2filename = QFileDialog::getOpenFileName(this, tr("Open Original STCM2 File"), PathSetting.LastChnTextFolder, "DAT Files (*.DAT);;All Files (*.*)", 0, 0);
+    if (stcm2filename.isEmpty()) {
+        return;
+    }
+    PathSetting.LastChnTextFolder = QFileInfo(stcm2filename).path();
+    STCM2Store store;
+    QFile file(stcm2filename);
+
+    file.open(QFile::ReadOnly);
+
+    QByteArray contents = file.readAll();
+
+    file.close();
+    if (!store.LoadFromBuffer(contents.constData(), contents.size())) {
+        return;
+    }
+    if (!store.ContainsDialog()) {
+        return;
+    }
+    QByteArray s2312content;
+    store.SaveToBuffer(s2312content);
+
+    QString newdatfilename = QFileDialog::getSaveFileName(this, tr("Save Shift2312 STCM2 File as"), PathSetting.LastChnTextFolder, "DAT Files (*.DAT);;All Files (*.*)", 0, 0);
+    if (newdatfilename.isEmpty()) {
+        return;
+    }
+    PathSetting.LastChnTextFolder = QFileInfo(newdatfilename).path();
+
+    QFile txtfile(newdatfilename);
+    txtfile.open(QFile::WriteOnly);
+    txtfile.write(s2312content);
+    txtfile.close();
+
+}
+
 
 int __cdecl TEncodingConvFrm::logprintf(const char * _Format, ... )
 {

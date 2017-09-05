@@ -56,6 +56,7 @@ private slots:
     void onStringValueModified();
     void onUTF16toShift2312Clicked();
     void onShift32toUTF16Clicked();
+    void onMergeSTCM2Clicked();
 };
 
 #endif

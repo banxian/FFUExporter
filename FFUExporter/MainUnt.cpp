@@ -745,7 +745,7 @@ void TMainFrm::onGBINConvertClicked()
 
 void TMainFrm::onExtractScriptsStringsClicked()
 {
-    QString stcmfolder = QFileDialog::getExistingDirectory(this, tr("Open Folder Contains script Files"), PathSetting.LastScriptsFolder);
+    QString stcmfolder = QFileDialog::getExistingDirectory(this, tr("Open Folder Contains Original Script Files"), PathSetting.LastScriptsFolder);
     if (stcmfolder.isEmpty()) {
         return;
     }
@@ -761,7 +761,13 @@ void TMainFrm::onExtractScriptsStringsClicked()
     for (QVector <QString>::const_iterator it = scriptlist.begin(); it != scriptlist.end(); it++) {
         STCM2Store store;
         QFile file(*it);
-        qDebug() << *it;
+        int stcmfolderlen = stcmfolder.length();
+        if (it->startsWith(stcmfolder)) {
+            qDebug() << it->mid(stcmfolderlen);
+        } else {
+            // never got here
+            qDebug() << *it;
+        }
 
         file.open(QFile::ReadOnly);
 
@@ -775,7 +781,7 @@ void TMainFrm::onExtractScriptsStringsClicked()
             continue;
         }
         QByteArray textscontent;
-        store.SaveToBuffer(textscontent);
+        store.ExportTranslationText(textscontent);
         QString txtfilename = (*it) + ".txt";
         QFile txtfile(txtfilename);
         txtfile.open(QFile::WriteOnly);

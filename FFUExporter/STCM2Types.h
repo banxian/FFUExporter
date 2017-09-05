@@ -12,7 +12,7 @@ typedef unsigned __int8 uint8_t;
 typedef unsigned __int32 uint32_t;
 #endif
 
-
+// types takes from neptools and some minor change applied by reverse engineer
 struct STCM2Header
 {
     char magic[0x20];
