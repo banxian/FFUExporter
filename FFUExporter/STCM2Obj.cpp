@@ -5,7 +5,7 @@
 #include <xutility>
 
 
-STCM2Store::STCM2Store(void) : fInstID(0)
+STCM2Store::STCM2Store(void) : fInstID(0), fDataID(0)
 {
 }
 
@@ -39,7 +39,8 @@ bool STCM2Store::LoadFromBuffer( const void* buf, unsigned int size )
     int nakeoppos = codestartpos + sizeof("CODE_START_");
     int exportdatapos = header.export_offset?header.export_offset - sizeof("EXPORT_DATA"):size;
     int opsize;
-    int opID = 0;
+    // TODO: use fOffsetIDMap instead opID (slower?)
+    int opID = 1;
 
     for (int oppos = nakeoppos; oppos < exportdatapos; oppos += opsize, opID++) {
         STCM2InstructionHeader* nakecode = (STCM2InstructionHeader*)((char*)buf + oppos);
@@ -53,8 +54,6 @@ bool STCM2Store::LoadFromBuffer( const void* buf, unsigned int size )
             // combine name and texts
             bool intext = false;
             DialogBundle text;
-            text.hasname = false;
-            text.hastext = false;
             text.name = "NULL";
             // name's first param is a text?
             if (extractpayload(nakecode, buf, payloadsize, text.name, &text.hasname, QString("name param is not file offset at %1").arg(oppos, 8, 16, QLatin1Char('0')))) {
@@ -104,8 +103,6 @@ bool STCM2Store::LoadFromBuffer( const void* buf, unsigned int size )
                 qDebug() << QString("wild line found at %1").arg(oppos, 8, 16, QLatin1Char('0'));
             }
             DialogBundle text;
-            text.hasname = false;
-            text.hastext = false;
             text.name = "NULL";
             std::string line = "LINE";
             if (extractpayload(nakecode, buf, payloadsize, line, &text.hastext, QString("line param is not file offset at %1").arg(oppos, 8, 16, QLatin1Char('0')))) {
@@ -238,7 +235,7 @@ bool STCM2Store::ParseNakedCodes( const void* buf, unsigned int size )
     int exportdatapos = header.export_offset?header.export_offset - sizeof("EXPORT_DATA"):size;
     int opsize;
 
-    std::map<int,int> OffsetIDMap;
+    DualIntMap OffsetIDMap;
 
     for (int oppos = nakeoppos; oppos < exportdatapos; oppos += opsize) {
         STCM2InstructionHeader* nakecode = (STCM2InstructionHeader*)((char*)buf + oppos);
@@ -259,13 +256,12 @@ bool STCM2Store::ParseNakedCodes( const void* buf, unsigned int size )
                     qDebug() << QString("param is not file offset at %1").arg(oppos, 8, 16, QLatin1Char('0'));
                 } else {
                     const STCM2Data* data = (STCM2Data*)((char*)buf + ExtractSTCM2ParamValue(param->param_0));
-                    STCM2ParameterEx paramex;
-                    memcpy(&paramex.param_0, &param->param_0, sizeof(*param));
+                    STCM2ParameterEx paramex(*param);
                     paramex.textInLocalPayload = ((STCM2Parameter*)data == (param + 1));
-                    paramex.linkedToID = false;
                     if (data->length && paramex.textInLocalPayload) {
-                        // TODO: override operator =
-                        memcpy(&paramex.data.type, &data->type, sizeof(*data));
+                        // DONE: overload operator =
+                        paramex.payloadDelta = 0;
+                        paramex.data = *data;
                         paramex.data.body.resize(data->length);
                         memcpy(&paramex.data.body[0], (char*)(data + 1), data->length);
                     }
@@ -273,18 +269,22 @@ bool STCM2Store::ParseNakedCodes( const void* buf, unsigned int size )
                 }
             }
         }
+        // not SET_SPEAKERNAME or ADD_DIALOGUE, may be op or call
         if (nakecode->param_count && code.params.empty()) {
             const STCM2Parameter* param = (STCM2Parameter*)(nakecode + 1);
             const STCM2Parameter* paramend = param + nakecode->param_count;
             for (;param<paramend;param++) {
+                STCM2ParameterEx paramex(*param);
                 if (param->param_0 == COLL_LINK) {
                     qDebug() << QString("Found Collection link belong to code: %1").arg(oppos, 8, 16, QLatin1Char('0'));
                 }
-
-                STCM2ParameterEx paramex;
-                memcpy(&paramex.param_0, &param->param_0, sizeof(*param));
-                paramex.textInLocalPayload = false;
-                paramex.linkedToID = false;
+                uint32_t pt = ExtractSTCM2ParamType(param->param_0);
+                if (pt == MEM_OFFSET) {
+                    unsigned int target = ExtractSTCM2ParamValue(param->param_0);
+                    char* dest = (char*)buf + target;
+                    paramex.textInLocalPayload = ((dest >= (char*)paramend) && (target < oppos + opsize));
+                    paramex.payloadDelta = (char*)dest - (char*)paramend;
+                }
                 code.params.push_back(paramex);
             }
         }
@@ -300,7 +300,7 @@ bool STCM2Store::ParseNakedCodes( const void* buf, unsigned int size )
             if (pt == SPECIAL) {
                 if (pit->param_0 == INSTR_PTR0 || pit->param_0 == INSTR_PTR1) {
                     // TODO: store map and??
-                    std::map<int, int>::const_iterator lit = OffsetIDMap.find(pit->param_4);
+                    DualIntMap::const_iterator lit = OffsetIDMap.find(pit->param_4);
                     if (lit != OffsetIDMap.end()) {
                         pit->linkedToID = true;
                         pit->linkedID = lit->second;
@@ -314,15 +314,16 @@ bool STCM2Store::ParseNakedCodes( const void* buf, unsigned int size )
     if (header.export_count && header.export_offset) {
         STCM2ExportEntry* expent = (STCM2ExportEntry*)((char*)buf + header.export_offset);
         for (int i = 0; i < header.export_count; expent++, i++){
-            STCM2ExportEntryEx expentex;
-            memcpy(&expentex.type, &expent->type, sizeof(*expent));
-            expentex.linkedToID = false;
+            STCM2ExportEntryEx expentex(*expent);
             if (expent->type == 0) {
-                std::map<int, int>::const_iterator lit = OffsetIDMap.find(expent->offset);
+                DualIntMap::const_iterator lit = OffsetIDMap.find(expent->offset);
                 if (lit != OffsetIDMap.end()) {
                     expentex.linkedToID = true;
                     expentex.linkedID = lit->second;
                 }
+            }
+            if (expent->type == 1) {
+
             }
             fExports.push_back(expentex);
         }
@@ -331,7 +332,6 @@ bool STCM2Store::ParseNakedCodes( const void* buf, unsigned int size )
 
     return true;
 }
-
 
 bool STCM2Store::SaveToBuffer( QByteArray& buf )
 {
@@ -363,13 +363,27 @@ bool STCM2Store::SaveToBuffer( QByteArray& buf )
 
 bool STCM2Store::FixupOffsets()
 {
-    std::map<int,int> IDOffsetMap;
+    DualIntMap IDOffsetMap;
 
     int oppos = sizeof(STCM2Header) + fHeaderExtra.size() + sizeof("CODE_START_");
     int opsize;
     for (CodeBundleVec::iterator it = fNakedCodes.begin(); it != fNakedCodes.end(); it++, oppos += opsize) {
         opsize = sizeof(STCM2InstructionHeader) + it->code.param_count * sizeof(STCM2Parameter) + it->payload.size();
         IDOffsetMap.insert(std::make_pair(it->codeID, oppos));
+        bool shortcircuit = false;
+        if (it->code.is_call == 0) {
+            if ((it->code.opcode_or_offset == ADD_DIALOGUE || it->code.opcode_or_offset == SET_SPEAKERNAME) && it->params[0].textInLocalPayload) {
+                it->params[0].param_0 = oppos + sizeof(STCM2InstructionHeader) + it->code.param_count * sizeof(STCM2Parameter);
+                shortcircuit = true;
+            }
+        }
+        if (shortcircuit == false && it->params.empty() == false && it->payload.empty() == false) {
+            for (ParameterExVec::iterator pit = it->params.begin(); pit != it->params.end(); pit++) {
+                if (pit->textInLocalPayload) {
+                    pit->param_0 = oppos + sizeof(STCM2InstructionHeader) + it->code.param_count * sizeof(STCM2Parameter) + pit->payloadDelta;
+                }
+            }
+        }
     }
 
     fHeader.export_offset = oppos + sizeof("EXPORT_DATA");
@@ -377,7 +391,7 @@ bool STCM2Store::FixupOffsets()
     for (CodeBundleVec::iterator it = fNakedCodes.begin(); it != fNakedCodes.end(); it++) {
         for (ParameterExVec::iterator pit = it->params.begin(); pit != it->params.end(); pit++) {
             if (pit->linkedToID) {
-                std::map<int,int>::const_iterator lit = IDOffsetMap.find(pit->linkedID);
+                DualIntMap::const_iterator lit = IDOffsetMap.find(pit->linkedID);
                 if (lit != IDOffsetMap.end()) {
                     pit->param_4 = lit->second;
                 }
@@ -386,10 +400,13 @@ bool STCM2Store::FixupOffsets()
     }
     for (ExportEntryExVec::iterator it = fExports.begin(); it != fExports.end(); it++) {
         if (it->type == 0 && it->linkedToID) {
-            std::map<int,int>::const_iterator lit = IDOffsetMap.find(it->linkedID);
+            DualIntMap::const_iterator lit = IDOffsetMap.find(it->linkedID);
             if (lit != IDOffsetMap.end()) {
                 it->offset = lit->second;
             }
+        }
+        // TODO: link to data
+        if (it->type == 1 && it->linkedToID) {
 
         }
     }
@@ -402,6 +419,36 @@ int STCM2Store::GenerateID()
 {
     // TODO: lock
     return fInstID.fetchAndAddOrdered(1) + 1;
+}
+
+int STCM2Store::GenerateID2()
+{
+    return fDataID.fetchAndAddOrdered(1) + 1;
+}
+
+bool STCM2Store::ReplaceDialogueDebug( int textID, const std::string& newstr )
+{
+    // TODO: build ID to index loopup table after dialogue count changed
+    for (CodeBundleVec::iterator it = fNakedCodes.begin(); it != fNakedCodes.end(); it++) {
+        if (it->codeID == textID && it->code.is_call == 0 && it->code.opcode_or_offset == ADD_DIALOGUE) {
+            // first update data
+            int newlen = ((newstr.length() + 1 + 3) / 4) * 4;
+            int newdwordcount = newlen / 4;
+            if (it->params[0].textInLocalPayload) {
+                // Update data
+                it->params[0].data.length = newlen;
+                it->params[0].data.offset_unit = newdwordcount;
+                it->payload.resize(newlen + sizeof(STCM2Data));
+                STCM2Data* data = (STCM2Data*)(&it->payload[0]);
+                *data = it->params[0].data;
+                char* strptr = (char*)(data + 1); // (char*)data + sizeof(STCM2Data);
+                memset(strptr + newstr.length(), 0, newlen - newstr.length());
+                memcpy(strptr, newstr.c_str(), newstr.length());
+                it->code.size = sizeof(STCM2InstructionHeader) + it->code.param_count * sizeof(STCM2Parameter) + it->payload.size(); // or fix in FixupOffsets?
+            }
+        }
+    }
+    return true;
 }
 
 bool extractpayload( STCM2InstructionHeader* nakecode, const void* buf, int payloadsize, std::string& field, bool* hasfield, const QString& errmsg )

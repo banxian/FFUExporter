@@ -294,6 +294,15 @@ void TEncodingConvFrm::onMergeSTCM2Clicked()
     if (!store.ContainsDialog()) {
         return;
     }
+
+    unsigned char newstrdata[24] = {
+        0x82, 0xA0, 0x82, 0xA0, 0x82, 0x9F, 0x81, 0x55, 0x81, 0x40, 0x82, 0xF1, 0x82, 0xBE, 0x82, 0xBB,
+        0x82, 0xE8, 0x82, 0xE1, 0x81, 0x63, 0x81, 0x63 
+    };
+    std::string newstr;
+    newstr.assign((char*)newstrdata, sizeof(newstrdata));
+    store.ReplaceDialogueDebug(630, newstr);
+
     QByteArray s2312content;
     store.SaveToBuffer(s2312content);
 
