@@ -79,6 +79,7 @@ void TEncodingConvFrm::onStringValueModified()
 
 void TEncodingConvFrm::LoadTables( const QString& s2312filename, const QString& imagecharfilename, const QString& ffucharmapfilename )
 {
+    // TODO: build a custom QTextCodec
     QFile charlistfile(s2312filename);
     charlistfile.open(QFile::ReadOnly);
     QByteArray charlistsbuf = charlistfile.readAll();
@@ -179,7 +180,7 @@ void TEncodingConvFrm::LoadTables( const QString& s2312filename, const QString& 
             UnicodeLookupRecItem item;
             item.isS2312 = false;
             item.isSJIS = true;
-            item.sjiscode = w; // utf16ts memory, LO,HI
+            item.sjiscode = w; // in memory, LO,HI
             item.singlebyte = w < 0x100;
             unsigned short uc = unistr[0].unicode();
             if (w == 0x815C || w == 0x8160) {
@@ -373,14 +374,29 @@ void TEncodingConvFrm::onMergeSTCM2Clicked()
                 unsigned int orgcount = tails[2].right(2).left(1).toUInt();
                 QStringList texts = utf16ts.readLine().split("\\n");
                 int index = 0;
-                for (QStringList::const_iterator tit = texts.begin(); tit != texts.end() && index < orgcount; tit++, index++) {
+                QStringList::const_iterator tit = texts.begin();
+                for (; tit != texts.end() && index < orgcount; tit++, index++) {
                     store.ReplaceDialogueDebug(opID + index, UnicodeStrToShift2312Str(*tit));
                 }
                 if (texts.size() < orgcount) {
                     // remove tail
+                    for (; index < orgcount; index++) {
+                        if (false == store.RemoveDialogueDebug(opID + index)) {
+                            AddLog(QString("Remove opcode %1 failed, for translation %3").arg(opID + index).arg(utf16filename), ltError);
+                        }
+                    }
                 }
                 if (texts.size() > orgcount) {
                     // Append?
+                    int baseID = opID + index - 1;
+                    for (; tit != texts.end(); tit++) {
+                        int newID = store.InsertDialogueDebug(baseID, UnicodeStrToShift2312Str(*tit));
+                        if (newID == -1) {
+                            AddLog(QString("Insert \"%1\" failed after opcode %2, for translation %3").arg(*tit).arg(baseID).arg(utf16filename), ltError);
+                            break;
+                        }
+                        baseID = newID;
+                    }
                 }
             }
         }

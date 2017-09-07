@@ -105,12 +105,15 @@ private:
     int GenerateID();
     int GenerateID2();
     bool FixupOffsets();
+    bool UpdateLocalPayloadText( CodeBundle &code, const std::string &newstr );
 public:
     bool LoadFromBuffer(const void* buf, unsigned int size);
     bool ExportTranslationText(QByteArray& buf);
     bool ContainsDialog();
     bool SaveToBuffer(QByteArray& buf);
     bool ReplaceDialogueDebug(int textID, const std::string& newstr);
+    bool RemoveDialogueDebug(int textID);
+    int InsertDialogueDebug(int baseID, const std::string& newstr);
 };
 
 uint32_t ExtractSTCM2ParamType(uint32_t x);

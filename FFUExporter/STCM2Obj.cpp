@@ -435,24 +435,59 @@ bool STCM2Store::ReplaceDialogueDebug( int textID, const std::string& newstr )
     // TODO: build ID to index loopup table after dialogue count changed
     for (CodeBundleVec::iterator it = fNakedCodes.begin(); it != fNakedCodes.end(); it++) {
         if (it->codeID == textID && it->code.is_call == 0 && (it->code.opcode_or_offset == ADD_DIALOGUE || it->code.opcode_or_offset == SET_SPEAKERNAME)) {
-            // first update data
-            int newlen = ((newstr.length() + 1 + 3) / 4) * 4;
-            int newdwordcount = newlen / 4;
-            if (it->params[0].textInLocalPayload) {
-                // Update data
-                it->params[0].data.length = newlen;
-                it->params[0].data.offset_unit = newdwordcount;
-                it->payload.resize(newlen + sizeof(STCM2Data));
-                STCM2Data* data = (STCM2Data*)(&it->payload[0]);
-                *data = it->params[0].data;
-                char* strptr = (char*)(data + 1); // (char*)data + sizeof(STCM2Data);
-                memset(strptr + newstr.length(), 0, newlen - newstr.length());
-                memcpy(strptr, newstr.c_str(), newstr.length());
-                it->code.size = sizeof(STCM2InstructionHeader) + it->code.param_count * sizeof(STCM2Parameter) + it->payload.size(); // or fix in FixupOffsets?
-            }
+            CodeBundle& code = *it;
+            return UpdateLocalPayloadText(code, newstr);
         }
     }
-    return true;
+    return false;
+}
+
+bool STCM2Store::UpdateLocalPayloadText( CodeBundle &code, const std::string &newstr )
+{
+    // first update data
+    int newlen = ((newstr.length() + 1 + 3) / 4) * 4;
+    int newdwordcount = newlen / 4;
+    if (code.params[0].textInLocalPayload) {
+        // Update data
+        code.params[0].data.length = newlen;
+        code.params[0].data.offset_unit = newdwordcount;
+        code.payload.resize(newlen + sizeof(STCM2Data));
+        STCM2Data* data = (STCM2Data*)(&code.payload[0]);
+        *data = code.params[0].data;
+        char* strptr = (char*)(data + 1); // (char*)data + sizeof(STCM2Data);
+        memset(strptr + newstr.length(), 0, newlen - newstr.length());
+        memcpy(strptr, newstr.c_str(), newstr.length());
+        code.code.size = sizeof(STCM2InstructionHeader) + code.code.param_count * sizeof(STCM2Parameter) + code.payload.size(); // or fix in FixupOffsets?
+        return true;
+    }
+    return false;
+}
+
+bool STCM2Store::RemoveDialogueDebug( int textID )
+{
+    for (CodeBundleVec::iterator it = fNakedCodes.begin(); it != fNakedCodes.end(); it++) {
+        if (it->codeID == textID && it->code.is_call == 0 && (it->code.opcode_or_offset == ADD_DIALOGUE)) {
+            fNakedCodes.erase(it);
+            return true;
+        }
+    }
+    return false;
+}
+
+int STCM2Store::InsertDialogueDebug( int baseID, const std::string& newstr )
+{
+    for (CodeBundleVec::iterator it = fNakedCodes.begin(); it != fNakedCodes.end(); it++) {
+        if (it->codeID == baseID && it->code.is_call == 0 && (it->code.opcode_or_offset == ADD_DIALOGUE)) {
+            CodeBundle code = *it; // copy
+            code.codeID = GenerateID();
+            if (UpdateLocalPayloadText(code, newstr)) {
+                fNakedCodes.insert(++it, code); // it got invalid after insertion. need reassign by index
+                return code.codeID; // but we just return
+            }
+            return -1;
+        }
+    }
+    return -1;
 }
 
 bool extractpayload( STCM2InstructionHeader* nakecode, const void* buf, int payloadsize, std::string& field, bool* hasfield, const QString& errmsg )
