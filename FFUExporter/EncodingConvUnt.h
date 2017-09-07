@@ -25,6 +25,8 @@ namespace Ui {
     class TEncodingConvFrm;
 }
 
+class STCM2Store;
+
 class TEncodingConvFrm : public QWidget {
     Q_OBJECT
 public:
@@ -49,6 +51,7 @@ private:
     void AddLog(QString content, TLogType logtype = ltMessage);
     QByteArray UnicodeStrToShift2312(const QString& str);
     std::string UnicodeStrToShift2312Str(const QString& str);
+    void ImportCHSTextToStore( STCM2Store &store, const QString& utf16filename );
 
 signals:
     void logStored(QString content, TLogType logtype);
@@ -59,6 +62,7 @@ private slots:
     void onUTF16toShift2312Clicked();
     void onShift2312toUTF16Clicked();
     void onMergeSTCM2Clicked();
+    void onMergeScriptFolderClicked();
 };
 
 #endif

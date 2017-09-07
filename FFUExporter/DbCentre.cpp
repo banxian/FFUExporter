@@ -14,11 +14,12 @@ void LoadAppSettings( void )
     PathSetting.LastProjectFolder = settings.value("Path/LastProjectFolder", "").toString();
     PathSetting.LastGlyphMatrixFolder = settings.value("Path/LastGlyphMatrixFolder", "").toString();
     PathSetting.LastCharListFolder = settings.value("Path/LastCharListFolder", "").toString();
-    PathSetting.LastChnTextFolder = settings.value("Path/LastChnTextFolder", "").toString();
+    PathSetting.LastCHSTextFolder = settings.value("Path/LastCHSTextFolder", "").toString();
     PathSetting.LastGBINFolder = settings.value("Path/LastGBINFolder", "").toString();
     PathSetting.LastExportFolder = settings.value("Path/LastExportFolder", "").toString();
     PathSetting.LastImportFolder = settings.value("Path/LastImportFolder", "").toString();
     PathSetting.LastScriptsFolder = settings.value("Path/LastScriptsFolder", "").toString();
+    PathSetting.LastCHSScriptsFolder = settings.value("Path/LastCHSScriptsFolder", "").toString();
     PathSetting.LastSelectedItemIndex = settings.value("Path/LastSelectedItemIndex", 0).toInt();
 
     StateSetting.WindowMaxium = settings.value("State/WindowMaxium", true).toBool();
@@ -39,11 +40,12 @@ void SaveAppSettings( void )
     settings.setValue("LastProjectFolder", PathSetting.LastProjectFolder);
     settings.setValue("LastGlyphMatrixFolder", PathSetting.LastGlyphMatrixFolder);
     settings.setValue("LastCharListFolder", PathSetting.LastCharListFolder);
-    settings.setValue("LastChnTextFolder", PathSetting.LastChnTextFolder);
+    settings.setValue("LastCHSTextFolder", PathSetting.LastCHSTextFolder);
     settings.setValue("LastGBINFolder", PathSetting.LastGBINFolder);
     settings.setValue("LastExportFolder", PathSetting.LastExportFolder);
     settings.setValue("LastImportFolder", PathSetting.LastImportFolder);
     settings.setValue("LastScriptsFolder", PathSetting.LastScriptsFolder);
+    settings.setValue("LastCHSScriptsFolder", PathSetting.LastCHSScriptsFolder);
     settings.setValue("LastSelectedItemIndex", PathSetting.LastSelectedItemIndex);
     settings.endGroup();
 

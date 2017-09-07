@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>397</height>
+    <width>441</width>
+    <height>466</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -85,20 +85,6 @@
      </layout>
     </widget>
    </item>
-   <item row="1" column="3">
-    <widget class="QPushButton" name="loadTableBtn">
-     <property name="text">
-      <string>Load Tables</string>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="0" colspan="2">
-    <widget class="QCheckBox" name="bigendianChk">
-     <property name="text">
-      <string>Bigendian Shift2312</string>
-     </property>
-    </widget>
-   </item>
    <item row="1" column="2">
     <spacer name="horizontalSpacer">
      <property name="orientation">
@@ -111,6 +97,20 @@
       </size>
      </property>
     </spacer>
+   </item>
+   <item row="4" column="0" colspan="2">
+    <widget class="QCheckBox" name="bigendianChk">
+     <property name="text">
+      <string>Bigendian Shift2312</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="3">
+    <widget class="QPushButton" name="loadTableBtn">
+     <property name="text">
+      <string>Load Tables</string>
+     </property>
+    </widget>
    </item>
    <item row="1" column="0">
     <layout class="QGridLayout" name="gridLayout_3">
@@ -173,11 +173,36 @@
      </item>
     </layout>
    </item>
-   <item row="7" column="3">
-    <widget class="QPushButton" name="mergeSTCM2Btn">
-     <property name="text">
-      <string>Writeback STCM2 File</string>
+   <item row="8" column="0" colspan="4">
+    <widget class="QFrame" name="frame_2">
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
      </property>
+     <property name="frameShadow">
+      <enum>QFrame::Plain</enum>
+     </property>
+     <property name="lineWidth">
+      <number>0</number>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_4">
+      <property name="margin">
+       <number>0</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QPushButton" name="mergeScriptFolderBtn">
+        <property name="text">
+         <string>Merge script Folder</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QPushButton" name="mergeSTCM2Btn">
+        <property name="text">
+         <string>Writeback STCM2 File</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
   </layout>
@@ -280,6 +305,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>mergeScriptFolderBtn</sender>
+   <signal>clicked()</signal>
+   <receiver>TEncodingConvFrm</receiver>
+   <slot>onMergeScriptFolderClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>113</x>
+     <y>445</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>220</x>
+     <y>232</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>onStringValueModified()</slot>
@@ -287,5 +328,6 @@
   <slot>onUTF16toShift2312Clicked()</slot>
   <slot>onShift2312toUTF16Clicked()</slot>
   <slot>onMergeSTCM2Clicked()</slot>
+  <slot>onMergeScriptFolderClicked()</slot>
  </slots>
 </ui>

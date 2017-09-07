@@ -211,11 +211,11 @@ void TEncodingConvFrm::LoadTables( const QString& s2312filename, const QString& 
 
 void TEncodingConvFrm::onUTF16toShift2312Clicked()
 {
-    QString utf16filename = QFileDialog::getOpenFileName(this, tr("Open Translated UTF16 File"), PathSetting.LastChnTextFolder, "txt Files (*.txt);;All Files (*.*)", 0, 0);
+    QString utf16filename = QFileDialog::getOpenFileName(this, tr("Open Translated UTF16 File"), PathSetting.LastCHSTextFolder, "txt Files (*.txt);;All Files (*.*)", 0, 0);
     if (utf16filename.isEmpty()) {
         return;
     }
-    PathSetting.LastChnTextFolder = QFileInfo(utf16filename).path();
+    PathSetting.LastCHSTextFolder = QFileInfo(utf16filename).path();
 
     QFile utf16file(utf16filename);
     utf16file.open(QFile::ReadOnly);
@@ -266,11 +266,11 @@ void TEncodingConvFrm::onUTF16toShift2312Clicked()
         converted++;
     }
 
-    QString s2312filename = QFileDialog::getSaveFileName(this, tr("Save Shift2312 File as"), PathSetting.LastChnTextFolder, "txt Files (*.txt);;All Files (*.*)", 0, 0);
+    QString s2312filename = QFileDialog::getSaveFileName(this, tr("Save Shift2312 File as"), PathSetting.LastCHSTextFolder, "txt Files (*.txt);;All Files (*.*)", 0, 0);
     if (s2312filename.isEmpty()) {
         return;
     }
-    PathSetting.LastChnTextFolder = QFileInfo(s2312filename).path();
+    PathSetting.LastCHSTextFolder = QFileInfo(s2312filename).path();
 
     QFile s2312file(s2312filename);
     s2312file.open(QFile::WriteOnly);
@@ -324,11 +324,11 @@ std::string TEncodingConvFrm::UnicodeStrToShift2312Str( const QString& str )
 
 void TEncodingConvFrm::onMergeSTCM2Clicked()
 {
-    QString stcm2filename = QFileDialog::getOpenFileName(this, tr("Open Original STCM2 File"), PathSetting.LastChnTextFolder, "DAT Files (*.DAT);;All Files (*.*)", 0, 0);
+    QString stcm2filename = QFileDialog::getOpenFileName(this, tr("Open Original STCM2 File"), PathSetting.LastCHSTextFolder, "DAT Files (*.DAT);;All Files (*.*)", 0, 0);
     if (stcm2filename.isEmpty()) {
         return;
     }
-    PathSetting.LastChnTextFolder = QFileInfo(stcm2filename).path();
+    PathSetting.LastCHSTextFolder = QFileInfo(stcm2filename).path();
     STCM2Store store;
     QFile file(stcm2filename);
 
@@ -344,12 +344,104 @@ void TEncodingConvFrm::onMergeSTCM2Clicked()
         return;
     }
 
-    QString utf16filename = QFileDialog::getOpenFileName(this, tr("Open Translated UTF16 File"), PathSetting.LastChnTextFolder, "txt Files (*.txt);;All Files (*.*)", 0, 0);
+    QString utf16filename = QFileDialog::getOpenFileName(this, tr("Open Translated UTF16 File"), PathSetting.LastCHSTextFolder, "txt Files (*.txt);;All Files (*.*)", 0, 0);
     if (utf16filename.isEmpty()) {
         return;
     }
-    PathSetting.LastChnTextFolder = QFileInfo(utf16filename).path();
+    PathSetting.LastCHSTextFolder = QFileInfo(utf16filename).path();
 
+    ImportCHSTextToStore(store, utf16filename);
+
+    QByteArray s2312content;
+    store.SaveToBuffer(s2312content);
+
+    QString newdatfilename = QFileDialog::getSaveFileName(this, tr("Save Shift2312 STCM2 File as"), PathSetting.LastCHSTextFolder, "DAT Files (*.DAT);;All Files (*.*)", 0, 0);
+    if (newdatfilename.isEmpty()) {
+        return;
+    }
+    PathSetting.LastCHSTextFolder = QFileInfo(newdatfilename).path();
+
+    QFile datfile(newdatfilename);
+    datfile.open(QFile::WriteOnly);
+    datfile.write(s2312content);
+    datfile.close();
+}
+
+
+void TEncodingConvFrm::onMergeScriptFolderClicked()
+{
+    QString stcmfolder = QFileDialog::getExistingDirectory(this, tr("Open Folder Contains Original Script Files"), PathSetting.LastScriptsFolder);
+    if (stcmfolder.isEmpty()) {
+        return;
+    }
+    PathSetting.LastScriptsFolder = stcmfolder; // windows separator
+
+    QVector <QString> scriptlist;
+
+    QDirIterator dit(stcmfolder, QStringList() << "*.DAT", QDir::Files, QDirIterator::Subdirectories);
+    QString stcmfolder2 = QFileInfo(stcmfolder).absoluteFilePath(); // normalize path separator
+    while (dit.hasNext()) {
+        //qDebug() << dit.next();
+        scriptlist.push_back(dit.next());
+    }
+    if (scriptlist.empty()) {
+        return;
+    }
+    QString outfolder = QFileDialog::getExistingDirectory(this, tr("Save Localized Script Files To Folder"), PathSetting.LastCHSScriptsFolder);
+    if (outfolder.isEmpty()) {
+        return;
+    }
+    PathSetting.LastCHSScriptsFolder = outfolder; // windows separator
+
+    // TODO: replace button to QProgressBar?
+    ui->mergeScriptFolderBtn->setEnabled(false);
+
+    for (QVector <QString>::const_iterator it = scriptlist.begin(); it != scriptlist.end(); it++) {
+        if (!it->startsWith(stcmfolder2)) {
+            // never got here
+            continue;
+        }
+
+        QString utf16filename = *it + "_CHS_utf16.txt";
+        if (QFileInfo(utf16filename).exists() == false) {
+            continue;
+        }
+
+        STCM2Store store;
+        QFile file(*it);
+        file.open(QFile::ReadOnly);
+        QByteArray contents = file.readAll();
+        file.close();
+
+        if (!store.LoadFromBuffer(contents.constData(), contents.size())) {
+            continue;
+        }
+        if (!store.ContainsDialog()) {
+            continue;
+        }
+
+        ImportCHSTextToStore(store, utf16filename);
+
+        int stcmfolderlen = stcmfolder2.length();
+        QString newdatfilename = outfolder + it->mid(stcmfolderlen);
+        QString newdatdir = newdatfilename.left(newdatfilename.lastIndexOf("/"));
+        QDir::root().mkpath(newdatdir);
+
+        QByteArray s2312content;
+        store.SaveToBuffer(s2312content);
+
+        QFile ndfile(newdatfilename);
+        ndfile.open(QFile::WriteOnly);
+        ndfile.write(s2312content);
+        ndfile.close();
+    }
+
+    ui->mergeScriptFolderBtn->setEnabled(true);
+}
+
+
+void TEncodingConvFrm::ImportCHSTextToStore( STCM2Store &store, const QString& utf16filename )
+{
     QFile utf16file(utf16filename);
     utf16file.open(QFile::ReadOnly | QFile::Text);
     QTextCodec* codec = QTextCodec::codecForUtfText(utf16file.peek(4), 0);
@@ -402,37 +494,8 @@ void TEncodingConvFrm::onMergeSTCM2Clicked()
         }
     }
     utf16file.close();
-
-    //unsigned char newstrdata[24] = {
-    //    0x82, 0xA0, 0x82, 0xA0, 0x82, 0x9F, 0x81, 0x55, 0x81, 0x40, 0x82, 0xF1, 0x82, 0xBE, 0x82, 0xBB,
-    //    0x82, 0xE8, 0x82, 0xE1, 0x81, 0x63, 0x81, 0x63 
-    //};
-    //std::string newstr;
-    //newstr.assign((char*)newstrdata, sizeof(newstrdata));
-    //store.ReplaceDialogueDebug(630, newstr);
-
-    //unsigned char newnamedata[4] = {
-    //    0x83, 0x41, 0x83, 0x84 
-    //};
-    //newstr.assign((char*)newnamedata, sizeof(newnamedata));
-    //store.ReplaceDialogueDebug(628, newstr);
-
-
-    QByteArray s2312content;
-    store.SaveToBuffer(s2312content);
-
-    QString newdatfilename = QFileDialog::getSaveFileName(this, tr("Save Shift2312 STCM2 File as"), PathSetting.LastChnTextFolder, "DAT Files (*.DAT);;All Files (*.*)", 0, 0);
-    if (newdatfilename.isEmpty()) {
-        return;
-    }
-    PathSetting.LastChnTextFolder = QFileInfo(newdatfilename).path();
-
-    QFile txtfile(newdatfilename);
-    txtfile.open(QFile::WriteOnly);
-    txtfile.write(s2312content);
-    txtfile.close();
-
 }
+
 
 
 int __cdecl TEncodingConvFrm::logprintf(const char * _Format, ... )
@@ -466,4 +529,5 @@ void TEncodingConvFrm::AddLog( QString content, TLogType logtype )
 {
     emit logStored(content, logtype);
 }
+
 

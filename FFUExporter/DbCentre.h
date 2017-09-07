@@ -8,11 +8,12 @@ typedef struct tagPathRecItem {
     QString LastProjectFolder; // Scheme? vi?
     QString LastGlyphMatrixFolder;
     QString LastCharListFolder;
-    QString LastChnTextFolder;
+    QString LastCHSTextFolder;
     QString LastGBINFolder;
     QString LastExportFolder;
     QString LastImportFolder;
     QString LastScriptsFolder;
+    QString LastCHSScriptsFolder;
     int LastSelectedItemIndex;
 } TPathRecItem;
 
