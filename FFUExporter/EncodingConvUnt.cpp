@@ -179,9 +179,12 @@ void TEncodingConvFrm::LoadTables( const QString& s2312filename, const QString& 
             UnicodeLookupRecItem item;
             item.isS2312 = false;
             item.isSJIS = true;
-            item.sjiscode = w; // in memory, LO,HI
+            item.sjiscode = w; // utf16ts memory, LO,HI
             item.singlebyte = w < 0x100;
             unsigned short uc = unistr[0].unicode();
+            if (w == 0x815C || w == 0x8160) {
+                AddLog(QString("strange characters U+%1 (%2) from ANSI %3" ).arg(uc, 4, 16, QLatin1Char('0')).arg(QChar(uc)).arg(w, 4, 16, QLatin1Char('0')), ltMessage);
+            }
             
             Uni2S2312Map::iterator it = fUni_to_S2312.find(uc);
             if (it == fUni_to_S2312.end()) {
@@ -190,14 +193,16 @@ void TEncodingConvFrm::LoadTables( const QString& s2312filename, const QString& 
                 it->second.isS2312 = true;
                 it->second.sjiscode = w;
                 if (it->second.singlebyte != item.singlebyte) {
-                    AddLog(QString("singlebyte flag mismatched on U+%1 (%2)" ).arg(w, 4, 16, QLatin1Char('0')).arg(QChar(w)), ltError);
+                    AddLog(QString("singlebyte flag mismatched on U+%1 (%2) from ANSI %3" ).arg(uc, 4, 16, QLatin1Char('0')).arg(QChar(uc)).arg(w, 4, 16, QLatin1Char('0')), ltError);
                 }
             }
 
             ffunonkanjicount++;
+        } else {
+            // never
         }
     }
-    //delete codec;
+
     ui->s2312mapcountView->setText(QString("%1").arg(s2312glyphcount));
     ui->psmapcountView->setText(QString("%1").arg(psglyphcount));
     ui->stdglyphcountView->setText(QString("%1").arg(ffunonkanjicount));
@@ -245,7 +250,12 @@ void TEncodingConvFrm::onUTF16toShift2312Clicked()
         } else if (w < ' ') {
             s2312buf.append((char)w);
         } else if (w == 0x2015) {
+            // used in neptools?
             unsigned short sjiscode = 0x5C81;
+            s2312buf.append((char*)&sjiscode, 2);
+        } else if (w == 0xFF5E) {
+            // u+301C
+            unsigned short sjiscode = 0x6081;
             s2312buf.append((char*)&sjiscode, 2);
         } else {
             AddLog(QString("Exception: character U+%1 (%2) out of ffu range!\n").arg(w, 4, 16, QLatin1Char('0')).arg(QChar(w)), ltError);
@@ -265,12 +275,50 @@ void TEncodingConvFrm::onUTF16toShift2312Clicked()
     s2312file.open(QFile::WriteOnly);
     s2312file.write(s2312buf);
     s2312file.close();
+}
+
+void TEncodingConvFrm::onShift2312toUTF16Clicked()
+{
 
 }
 
-void TEncodingConvFrm::onShift32toUTF16Clicked()
+QByteArray TEncodingConvFrm::UnicodeStrToShift2312( const QString& str )
 {
+    QByteArray s2312buf;
+    for (QString::const_iterator cit = str.begin(); cit < str.end(); cit++) {
+        unsigned short w = cit->unicode();
+        if (w == 0xFF5E) {
+            w = 0x301C; // 8160
+        }
+        Uni2S2312Map::const_iterator sit = fUni_to_S2312.find(w);
 
+        if (sit != fUni_to_S2312.end()) {
+            if (sit->second.singlebyte) {
+                s2312buf.append((unsigned char)sit->second.isS2312?sit->second.s2312code:sit->second.sjiscode);
+            } else {
+                unsigned short sjiscode = _byteswap_ushort(sit->second.isS2312?sit->second.s2312code:sit->second.sjiscode);
+                s2312buf.append((char*)&sjiscode, 2);
+            }
+        } else if (w < ' ') {
+            s2312buf.append((char)w);
+        } else if (w == 0x2015) {
+            // neptools brick. workaround if ffu charmap doesn't contains such characters
+            unsigned short sjiscode = 0x5C81;
+            s2312buf.append((char*)&sjiscode, 2);
+        } else {
+            AddLog(QString("Exception: character U+%1 (%2) out of ffu charmap range!\n").arg(w, 4, 16, QLatin1Char('0')).arg(QChar(w)), ltError);
+            return s2312buf;
+        }
+    }
+    return s2312buf;
+}
+
+std::string TEncodingConvFrm::UnicodeStrToShift2312Str( const QString& str )
+{
+    QByteArray ba = UnicodeStrToShift2312(str);
+    std::string ret;
+    ret.assign(ba.constData(), ba.size());
+    return ret;
 }
 
 void TEncodingConvFrm::onMergeSTCM2Clicked()
@@ -295,13 +343,64 @@ void TEncodingConvFrm::onMergeSTCM2Clicked()
         return;
     }
 
-    unsigned char newstrdata[24] = {
-        0x82, 0xA0, 0x82, 0xA0, 0x82, 0x9F, 0x81, 0x55, 0x81, 0x40, 0x82, 0xF1, 0x82, 0xBE, 0x82, 0xBB,
-        0x82, 0xE8, 0x82, 0xE1, 0x81, 0x63, 0x81, 0x63 
-    };
-    std::string newstr;
-    newstr.assign((char*)newstrdata, sizeof(newstrdata));
-    store.ReplaceDialogueDebug(630, newstr);
+    QString utf16filename = QFileDialog::getOpenFileName(this, tr("Open Translated UTF16 File"), PathSetting.LastChnTextFolder, "txt Files (*.txt);;All Files (*.*)", 0, 0);
+    if (utf16filename.isEmpty()) {
+        return;
+    }
+    PathSetting.LastChnTextFolder = QFileInfo(utf16filename).path();
+
+    QFile utf16file(utf16filename);
+    utf16file.open(QFile::ReadOnly | QFile::Text);
+    QTextCodec* codec = QTextCodec::codecForUtfText(utf16file.peek(4), 0);
+    if (codec == 0) {
+        codec = QTextCodec::codecForName("UTF-16LE");
+    }
+    QTextStream utf16ts(&utf16file);
+    utf16ts.setCodec(codec);
+    while(!utf16ts.atEnd()) {
+        QString line = utf16ts.readLine();
+        if (line.startsWith("//")) {
+            continue;
+        }
+        if (line.startsWith(";=================== ")) {
+            QStringList tails = line.mid(sizeof(";=================== ") - 1).remove(' ').split(':');
+            int opID = tails[1].toUInt();
+            if (tails[2].startsWith("NAME")) {
+                QString name = utf16ts.readLine();
+                store.ReplaceDialogueDebug(opID, UnicodeStrToShift2312Str(name));
+            }
+            if (tails[2].startsWith("TEXTS")) {
+                unsigned int orgcount = tails[2].right(2).left(1).toUInt();
+                QStringList texts = utf16ts.readLine().split("\\n");
+                int index = 0;
+                for (QStringList::const_iterator tit = texts.begin(); tit != texts.end() && index < orgcount; tit++, index++) {
+                    store.ReplaceDialogueDebug(opID + index, UnicodeStrToShift2312Str(*tit));
+                }
+                if (texts.size() < orgcount) {
+                    // remove tail
+                }
+                if (texts.size() > orgcount) {
+                    // Append?
+                }
+            }
+        }
+    }
+    utf16file.close();
+
+    //unsigned char newstrdata[24] = {
+    //    0x82, 0xA0, 0x82, 0xA0, 0x82, 0x9F, 0x81, 0x55, 0x81, 0x40, 0x82, 0xF1, 0x82, 0xBE, 0x82, 0xBB,
+    //    0x82, 0xE8, 0x82, 0xE1, 0x81, 0x63, 0x81, 0x63 
+    //};
+    //std::string newstr;
+    //newstr.assign((char*)newstrdata, sizeof(newstrdata));
+    //store.ReplaceDialogueDebug(630, newstr);
+
+    //unsigned char newnamedata[4] = {
+    //    0x83, 0x41, 0x83, 0x84 
+    //};
+    //newstr.assign((char*)newnamedata, sizeof(newnamedata));
+    //store.ReplaceDialogueDebug(628, newstr);
+
 
     QByteArray s2312content;
     store.SaveToBuffer(s2312content);
@@ -351,3 +450,4 @@ void TEncodingConvFrm::AddLog( QString content, TLogType logtype )
 {
     emit logStored(content, logtype);
 }
+

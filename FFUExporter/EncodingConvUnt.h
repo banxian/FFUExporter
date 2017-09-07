@@ -47,6 +47,8 @@ private:
     void LoadTables(const QString& s2312file, const QString& imagecharfile, const QString& ffucharmapfile);
     int __cdecl logprintf(const char * _Format, ...);
     void AddLog(QString content, TLogType logtype = ltMessage);
+    QByteArray UnicodeStrToShift2312(const QString& str);
+    std::string UnicodeStrToShift2312Str(const QString& str);
 
 signals:
     void logStored(QString content, TLogType logtype);
@@ -55,7 +57,7 @@ private slots:
     void onLoadTableClicked();
     void onStringValueModified();
     void onUTF16toShift2312Clicked();
-    void onShift32toUTF16Clicked();
+    void onShift2312toUTF16Clicked();
     void onMergeSTCM2Clicked();
 };
 

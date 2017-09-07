@@ -33,7 +33,6 @@ struct STCM2DataEx: STCM2Data
         memcpy(&this->type, &base.type, sizeof(base));
         return *this;
     }
-
 };
 
 struct STCM2ParameterEx: STCM2Parameter 
@@ -51,7 +50,6 @@ struct STCM2ParameterEx: STCM2Parameter
     STCM2ParameterEx() : textInLocalPayload(false), payloadDelta(-1), linkedToID(false), linkedID(-1) {
         memset(&this->param_0, 0, sizeof(STCM2Parameter));
     }
-
 };
 
 typedef std::vector<STCM2ParameterEx> ParameterExVec;
@@ -85,7 +83,7 @@ class STCM2Store
 private:
     STCM2Header fHeader;
     QByteArray fHeaderExtra; // GLOBAL_DATA?
-    DialogVec fDialogs;
+    DialogVec fDialogs; // TODO: only used for export or verify original count?
     enum ScriptType {
         stInvalid,
         stScenario,

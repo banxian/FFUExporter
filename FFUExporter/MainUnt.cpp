@@ -694,6 +694,7 @@ void TMainFrm::onStringEncodingConvClicked()
 {
     TEncodingConvFrm *converterfrm = new TEncodingConvFrm(); // Top one?
 
+    // TODO: LoadTables signal before new?
     QObject::connect(converterfrm, SIGNAL(logStored(QString, TLogType)),
         this, SLOT(writeLog(QString, TLogType)));
 
@@ -754,6 +755,7 @@ void TMainFrm::onExtractScriptsStringsClicked()
     QVector <QString> scriptlist;
 
     QDirIterator dit(stcmfolder, QStringList() << "*.DAT", QDir::Files, QDirIterator::Subdirectories);
+    QString stcmfolder2 = QFileInfo(stcmfolder).absoluteFilePath(); // normalize path separator
     while (dit.hasNext()) {
         //qDebug() << dit.next();
         scriptlist.push_back(dit.next());
@@ -761,8 +763,8 @@ void TMainFrm::onExtractScriptsStringsClicked()
     for (QVector <QString>::const_iterator it = scriptlist.begin(); it != scriptlist.end(); it++) {
         STCM2Store store;
         QFile file(*it);
-        int stcmfolderlen = stcmfolder.length();
-        if (it->startsWith(stcmfolder)) {
+        int stcmfolderlen = stcmfolder2.length();
+        if (it->startsWith(stcmfolder2)) {
             qDebug() << it->mid(stcmfolderlen);
         } else {
             // never got here

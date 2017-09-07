@@ -35,7 +35,6 @@ bool STCM2Store::LoadFromBuffer( const void* buf, unsigned int size )
 
     int codestartpos = codestart - (char*)buf;
 
-
     int nakeoppos = codestartpos + sizeof("CODE_START_");
     int exportdatapos = header.export_offset?header.export_offset - sizeof("EXPORT_DATA"):size;
     int opsize;
@@ -119,17 +118,20 @@ bool STCM2Store::LoadFromBuffer( const void* buf, unsigned int size )
 bool STCM2Store::ExportTranslationText( QByteArray& buf )
 {
     int index = 1;
-    int width = fDialogs.empty()?0:(floor(log10((double)max(fDialogs.back().nameID, fDialogs.back().textID)))+1);
+    int context = 1;
+    //int width = fDialogs.empty()?0:(floor(log10((double)max(fDialogs.back().nameID, fDialogs.back().textID)))+1);
     if (fScriptType == stScenario) {
+        int cw = floor(log10((double)fDialogs.size() * 2))+1;
         buf.append(QString("// %1 dialogue\r\n").arg(fDialogs.size()));
         for (DialogVec::const_iterator it = fDialogs.begin(); it != fDialogs.end(); it++, index++) {
+            // almost dialog have both name and text, but some buggy script lost one of them
             if (it->hasname) {
-                buf.append(QString(";=================== %1: NAME%2\r\n").arg(it->nameID, width, 10, QLatin1Char('0')).arg(index));
+                buf.append(QString(";=================== %1: %2: NAME%3\r\n").arg(context++, cw, 10, QLatin1Char('0')).arg(it->nameID).arg(index));
                 buf.append(it->name.c_str());
                 buf.append("\r\n");
             }
             if (it->hastext) {
-                buf.append(QString(";=================== %1: TEXTS%2[%3]\r\n").arg(it->textID, width, 10, QLatin1Char('0')).arg(index).arg(it->texts.size()));
+                buf.append(QString(";=================== %1: %2: TEXTS%3[%4]\r\n").arg(context++, cw, 10, QLatin1Char('0')).arg(it->textID).arg(index).arg(it->texts.size()));
                 for (StringVec::const_iterator sit = it->texts.begin(); sit != it->texts.end(); sit++) {
                     if (sit!=it->texts.begin()) {
                         buf.append("\\n");
@@ -145,16 +147,18 @@ bool STCM2Store::ExportTranslationText( QByteArray& buf )
         }
     }
     if (fScriptType == stStorage) {
+        int cw = floor(log10((double)fDialogs.size()))+1;
         // every line separate?!
         buf.append(QString("// %1 records\r\n").arg(fDialogs.size()));
         for (DialogVec::const_iterator it = fDialogs.begin(); it != fDialogs.end(); it++, index++) {
+            // hasname and hastext never co-exist
             if (it->hasname) {
-                buf.append(QString(";=================== %1: NAME%2\r\n").arg(it->nameID, width, 10, QLatin1Char('0')).arg(index));
+                buf.append(QString(";=================== %1: %2: NAME%3\r\n").arg(context++, cw, 10, QLatin1Char('0')).arg(it->nameID).arg(index));
                 buf.append(it->name.c_str());
                 buf.append("\r\n");
             }
             if (it->hastext) {
-                buf.append(QString(";=================== %1: TEXT%3\r\n").arg(it->nameID, width, 10, QLatin1Char('0')).arg(index));
+                buf.append(QString(";=================== %1: %2: TEXT%3\r\n").arg(context++, cw, 10, QLatin1Char('0')).arg(it->nameID).arg(index));
                 StringVec::const_iterator sit = it->texts.begin();
                 if (sit != it->texts.end()){
                     buf.append(sit->c_str());
@@ -430,7 +434,7 @@ bool STCM2Store::ReplaceDialogueDebug( int textID, const std::string& newstr )
 {
     // TODO: build ID to index loopup table after dialogue count changed
     for (CodeBundleVec::iterator it = fNakedCodes.begin(); it != fNakedCodes.end(); it++) {
-        if (it->codeID == textID && it->code.is_call == 0 && it->code.opcode_or_offset == ADD_DIALOGUE) {
+        if (it->codeID == textID && it->code.is_call == 0 && (it->code.opcode_or_offset == ADD_DIALOGUE || it->code.opcode_or_offset == SET_SPEAKERNAME)) {
             // first update data
             int newlen = ((newstr.length() + 1 + 3) / 4) * 4;
             int newdwordcount = newlen / 4;
