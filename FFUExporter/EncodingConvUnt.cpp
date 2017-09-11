@@ -148,6 +148,11 @@ void TEncodingConvFrm::LoadTables( const QString& s2312filename, const QString& 
 
     QTextCodec *codec = QTextCodec::codecForName("Shift-JIS");
 
+    if (!codec) {
+        AddLog("Shift-JIS codec is unavailable", ltError);
+        qDebug() << QTextCodec::availableCodecs();
+    }
+
     int ffunonkanjicount = 0;
     const unsigned char* charlist2 = (const unsigned char*)charlistsbuf2.constData();
     const unsigned char* charlist2end = (const unsigned char*)charlistsbuf2.constData() + charlistsbuf2.size();

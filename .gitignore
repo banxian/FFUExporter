@@ -90,3 +90,4 @@ object_script.*.*
 LibMUIMaker.map
 *.sdf
 ipch
+*.opensdf
