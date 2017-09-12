@@ -123,6 +123,9 @@
     <ClInclude Include="tmp\ui_StringEncodingConvFrm.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
+    <ClInclude Include="dirtyint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="FFUExporter.rc" />

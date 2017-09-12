@@ -496,6 +496,7 @@
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Shipping|Win32'">.\tmp\moc\$(Configuration)\moc_%(Filename).cpp;%(Outputs)</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Shipping|x64'">.\tmp\moc\$(Configuration)\moc_%(Filename).cpp;%(Outputs)</Outputs>
     </CustomBuild>
+    <ClInclude Include="dirtyint.h" />
     <ClInclude Include="FFUObj.h" />
     <ClInclude Include="FFUTypes.h" />
     <ClInclude Include="GBINObj.h" />

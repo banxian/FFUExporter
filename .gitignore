@@ -91,3 +91,5 @@ LibMUIMaker.map
 *.sdf
 ipch
 *.opensdf
+*.vcxproj.filters
+mt.dep

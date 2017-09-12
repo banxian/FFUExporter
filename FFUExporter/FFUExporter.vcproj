@@ -18,7 +18,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="$(SolutionDir)\Target\VS2008\$(ConfigurationName)"
+			OutputDirectory="$(SolutionDir)Target\VS2008\$(ConfigurationName)"
 			IntermediateDirectory=".\tmp\obj\$(ConfigurationName)"
 			ConfigurationType="1"
 			UseOfMFC="0"
@@ -338,6 +338,10 @@
 			</File>
 			<File
 				RelativePath=".\DbCentre.h"
+				>
+			</File>
+			<File
+				RelativePath=".\dirtyint.h"
 				>
 			</File>
 			<File
@@ -1018,7 +1022,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\PpsDES\16x16-tango\document.png"
+				RelativePath=".\PpsDES\24x24-gnome\document.png"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -1046,7 +1050,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\PpsDES\24x24-gnome\document.png"
+				RelativePath=".\PpsDES\16x16-tango\document.png"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -1242,7 +1246,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\PpsDES\24x24-tango\emblem-unreadable.png"
+				RelativePath=".\PpsDES\16x16-tango\emblem-unreadable.png"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -1270,7 +1274,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\PpsDES\16x16-tango\emblem-unreadable.png"
+				RelativePath=".\PpsDES\24x24-tango\emblem-unreadable.png"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -1503,7 +1507,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\PpsDES\24x24-unofficetango\folder_tar.png"
+				RelativePath=".\PpsDES\24x24-gnome\folder_tar.png"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -1531,7 +1535,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\PpsDES\24x24-gnome\folder_tar.png"
+				RelativePath=".\PpsDES\24x24-unofficetango\folder_tar.png"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
