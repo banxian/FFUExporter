@@ -26,6 +26,7 @@ private:
 private:
     //void GenerateOriginalSchemeFromStore(const RsrcStore& store, const std::string& inputpath);
     //void MergeLocalizedSchemeToStore(const std::string& schemepath, RsrcStore& store);
+    void PopupErrorHint(const QString& title, const QString& content);
 
 private slots:
     void onOpenFFUClicked();
@@ -35,6 +36,7 @@ private slots:
     void onStringEncodingConvClicked();
     void onGBINConvertClicked();
     void onExtractScriptsStringsClicked();
+    void onGBIN2ExcelClicked();
 
 public slots:
     void writeLog(QString content, TLogType logtype = ltMessage);

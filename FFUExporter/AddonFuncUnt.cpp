@@ -456,3 +456,15 @@ void *memmem(const void *haystack, size_t hlen, const void *needle, size_t nlen)
 
     return NULL;
 }
+
+QString IntToColumnBase( int column ) {
+    QString Result = "";
+    while (column > 0) {
+        Result.prepend(QChar('A' + column % 26));
+        column = column / 26;
+    }
+    if (Result.isEmpty()) {
+        Result = "A";
+    }
+    return Result;
+}

@@ -52,4 +52,6 @@ bool IsXORShiftJISLeadingByte(unsigned char c);
 
 void *memmem(const void *haystack, size_t hlen, const void *needle, size_t nlen);
 
+QString IntToColumnBase(int column);
+
 #endif

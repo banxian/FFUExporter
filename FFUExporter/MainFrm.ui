@@ -197,6 +197,7 @@
      <string>&amp;Tools</string>
     </property>
     <addaction name="actionGenerateFakeSJISCode"/>
+    <addaction name="actionGBINtoExcel"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_Tools"/>
@@ -329,6 +330,30 @@
     <string>Convert GBIN from big-endian</string>
    </property>
   </action>
+  <action name="actionConvertGBNLFiles">
+   <property name="icon">
+    <iconset resource="FFUExporter.qrc">
+     <normaloff>:/MainFrm/PpsDES/16x16-tango/shellscript.png</normaloff>:/MainFrm/PpsDES/16x16-tango/shellscript.png</iconset>
+   </property>
+   <property name="text">
+    <string>Convert GBNL files</string>
+   </property>
+   <property name="toolTip">
+    <string>Convert GBNL files to bigendian</string>
+   </property>
+  </action>
+  <action name="actionGBINtoExcel">
+   <property name="icon">
+    <iconset resource="FFUExporter.qrc">
+     <normaloff>:/MainFrm/PpsDES/16x16-tango/document.png</normaloff>:/MainFrm/PpsDES/16x16-tango/document.png</iconset>
+   </property>
+   <property name="text">
+    <string>GBIN to Excel</string>
+   </property>
+   <property name="toolTip">
+    <string>Export GBIN to Excel</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
@@ -447,6 +472,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionGBINtoExcel</sender>
+   <signal>triggered()</signal>
+   <receiver>TMainFrm</receiver>
+   <slot>onGBIN2ExcelClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>459</x>
+     <y>343</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>onOpenFFUClicked()</slot>
@@ -456,5 +497,6 @@
   <slot>onStringEncodingConvClicked()</slot>
   <slot>onGBINConvertClicked()</slot>
   <slot>onExtractScriptsStringsClicked()</slot>
+  <slot>onGBIN2ExcelClicked()</slot>
  </slots>
 </ui>

@@ -2,11 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-signed int func_gbin_normalize_endian(const void *buf, size_t len,
-                                      void *outheader)
+signed int func_gbin_normalize_endian(const void *buf, size_t len, void *outheader)
 {
     GBINHeaderFooter *header = (GBINHeaderFooter *)((char *)buf + len - 0x40);
-    unsigned char* buff = (unsigned __int8 *)buf;
+    unsigned char* buff = (uint8_t *)buf;
     // GBNL?
     if ( strncmp(header->magic, "GBN", 3) ) {
         return 1;
@@ -18,26 +17,26 @@ signed int func_gbin_normalize_endian(const void *buf, size_t len,
     }
     // big-endian
     if ( header->magic[3] == 'B' && !(header->endian_06 & 1) ) {
-        func_swapendian_len((unsigned __int8 *)&header->field_04, 2);
-        func_swapendian_len((unsigned __int8 *)&header->field_08, 4);
-        func_swapendian_len((unsigned __int8 *)&header->field_0c, 4);
-        func_swapendian_len((unsigned __int8 *)&header->flags, 4);
-        func_swapendian_len((unsigned __int8 *)&header->struct_offset, 4);
-        func_swapendian_len((unsigned __int8 *)&header->struct_count, 4);
-        func_swapendian_len((unsigned __int8 *)&header->struct_size, 4);
-        func_swapendian_len((unsigned __int8 *)&header->types_count, 4); // types_count is dword
-        func_swapendian_len((unsigned __int8 *)&header->types_offset, 4);
-        func_swapendian_len((unsigned __int8 *)&header->field_28, 4);
-        func_swapendian_len((unsigned __int8 *)&header->string_offset, 4);
-        func_swapendian_len((unsigned __int8 *)&header->field_30, 2);
+        func_swapendian_len((uint8_t *)&header->field_04, 2);
+        func_swapendian_len((uint8_t *)&header->field_08, 4);
+        func_swapendian_len((uint8_t *)&header->field_0c, 4);
+        func_swapendian_len((uint8_t *)&header->flags, 4);
+        func_swapendian_len((uint8_t *)&header->struct_offset, 4);
+        func_swapendian_len((uint8_t *)&header->struct_count, 4);
+        func_swapendian_len((uint8_t *)&header->struct_size, 4);
+        func_swapendian_len((uint8_t *)&header->types_count, 4); // types_count is dword
+        func_swapendian_len((uint8_t *)&header->types_offset, 4);
+        func_swapendian_len((uint8_t *)&header->field_28, 4);
+        func_swapendian_len((uint8_t *)&header->string_offset, 4);
+        func_swapendian_len((uint8_t *)&header->field_30, 2);
         int types_count = (signed __int16)header->types_count; // Load DWORD, use short
         if ( types_count > 0 ) {
             int typesdelta = 0;
             int types_counter = (signed __int16)header->types_count;
             do {
                 GBINTypeDescriptor *types = (GBINTypeDescriptor *)&buff[header->types_offset + typesdelta];
-                func_swapendian_len((unsigned __int8 *)&types->type, 2);
-                func_swapendian_len((unsigned __int8 *)&types->offset, 2);
+                func_swapendian_len((uint8_t *)&types->type, 2);
+                func_swapendian_len((uint8_t *)&types->offset, 2);
                 --types_counter;
                 typesdelta += 4;
             } while ( types_counter );
@@ -69,15 +68,17 @@ signed int func_gbin_normalize_endian(const void *buf, size_t len,
         header->endian_06 = endian6;
     }
     if ( header->flags & 1 ) {
-        // have string
+        // have string table
 #ifdef _DEBUG
         int stringcount = 0;
         unsigned char* structitemm1 = &buff[header->struct_offset];
         int typescount = (signed __int16)header->types_count;
-        __int32 structcount = header->struct_count; // should be signed int
-        __int32 structsize = header->struct_size; // signed?
+        int32_t structcount = header->struct_count; // should be signed int
+        int32_t structsize = header->struct_size; // signed?
         int16_t* offsets = (int16_t *)malloc(2 * typescount);
         int l = 0;
+        // every struct have typescount field.
+        // each field have type.type and located at type.offset
         if ( typescount > 0 ) {
             int16_t* offsetsm1 = offsets;
             GBINTypeDescriptor *lptype = (GBINTypeDescriptor *)&buff[header->types_offset];
@@ -101,13 +102,13 @@ signed int func_gbin_normalize_endian(const void *buf, size_t len,
                 do {
                     int offset = *offsetsm2;
                     unsigned char* strmemptr = 0;
-                    int stritemoff = *(unsigned __int32 *)&structitemm1[offset];
+                    int stritemoff = *(uint32_t *)&structitemm1[offset];
                     // offset?
                     if ( stritemoff != -1 ) {
                         strmemptr = &buff[header->string_offset + stritemoff];
                     }
                     ++m;
-                    //*(unsigned __int32*)&structitemm1[offset] = (unsigned __int32)strmemptr; //from file offset to memory address?!
+                    //*(uint32_t*)&structitemm1[offset] = (uint32)strmemptr; //from file offset to memory address?! only valied for 32bit arch
                     ++offsetsm2;
                 } while ( m < stringcount );
             }
@@ -141,9 +142,7 @@ void func_swapendian_len(unsigned char *buf, int len)
     }
 }
 
-void func_gbin_swap_structitem(unsigned char *structitems,
-                               GBINTypeDescriptor *types, int headerrevc,
-                               int headerrev30)
+void func_gbin_swap_structitem(unsigned char *structitems, GBINTypeDescriptor *types, int headerrevc, int headerrev30)
 {
 
     switch (types->type) {
@@ -226,7 +225,7 @@ void func_gbin_swap_structitem(unsigned char *structitems,
     case gtUINT64: // or double
         // fixed length
         {
-            signed int count1 = 2;
+            signed int counter = 2;
             unsigned char* t6ptr1 = &structitems[types->offset];
             unsigned char* t6ptr2 = &structitems[types->offset];
             // 7<->0
@@ -234,7 +233,7 @@ void func_gbin_swap_structitem(unsigned char *structitems,
             // 5<->2
             // 4<->3
             do {
-                --count1;
+                --counter;
                 char b7 = t6ptr1[7];
                 t6ptr1[7] = *t6ptr2; // 7 <-> 0
                 *t6ptr2 = b7;
@@ -243,7 +242,7 @@ void func_gbin_swap_structitem(unsigned char *structitems,
                 t6ptr1 -= 2;
                 t6ptr2[1] = b6;
                 t6ptr2 += 2;
-            } while (count1);
+            } while (counter);
         }
         break;
     case gtFIXINT32:
@@ -258,5 +257,25 @@ void func_gbin_swap_structitem(unsigned char *structitems,
             t7ptr[1] = b2;
         }
         break;
+    }
+}
+
+const char* GBINTypeNames[] = {
+    "gtUINT32",
+    "gtUINT8",
+    "gtUINT16",
+    "gtFLOAT",
+    "gtTYPE4",
+    "gtSTRING",
+    "gtUINT64",
+    "gtFIXINT32",
+};
+
+const char* GBINType2Str( GBINType type )
+{
+    if (type <= gtFIXINT32) {
+        return GBINTypeNames[type];
+    } else {
+        return 0;
     }
 }

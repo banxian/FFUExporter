@@ -63,6 +63,8 @@ private slots:
     void onShift2312toUTF16Clicked();
     void onMergeSTCM2Clicked();
     void onMergeScriptFolderClicked();
+
+    void loadDebugTables();
 };
 
 #endif

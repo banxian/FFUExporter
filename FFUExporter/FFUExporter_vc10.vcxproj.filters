@@ -85,6 +85,9 @@
     <ClCompile Include="tmp\moc\Shipping\moc_MainUnt.cpp">
       <Filter>Generated Files\Shipping</Filter>
     </ClCompile>
+    <ClCompile Include="MainUntExchange.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddonFuncUnt.h">

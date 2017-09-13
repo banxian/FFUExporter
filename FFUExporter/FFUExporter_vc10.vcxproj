@@ -147,7 +147,7 @@
     <ClCompile>
       <AdditionalOptions>-Zm200 -w34100 -w34189 -w34100 -w34189 %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>.\tmp;$(QTDIR)\include;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtXml;.;.\..\FvQKOLLite;.\LibMUIMaker;.\tmp\moc\$(Configuration);G:\root\git\qt\qt\src\3rdparty;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\tmp;$(QTDIR)\include;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;.;.\..\FvQKOLLite;.\LibMUIMaker;.\tmp\moc\$(Configuration);G:\root\git\qt\qt\src\3rdparty;$(QTDIR)\include\ActiveQt;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;QT_LARGEFILE_SUPPORT;QT_DLL;QT_GUI_LIB;QT_CORE_LIB;QT_THREAD_SUPPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessToFile>false</PreprocessToFile>
       <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
@@ -166,7 +166,7 @@
     </ResourceCompile>
     <Link>
       <AdditionalOptions>"/MANIFESTDEPENDENCY:type=%27win32%27 name=%27Microsoft.Windows.Common-Controls%27 version=%276.0.0.0%27 publicKeyToken=%276595b64144ccf1df%27 language=%27*%27 processorArchitecture=%27*%27" "/MANIFESTDEPENDENCY:type=%27win32%27 name=%27Microsoft.Windows.Common-Controls%27 version=%276.0.0.0%27 publicKeyToken=%276595b64144ccf1df%27 language=%27*%27 processorArchitecture=%27*%27" %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>QtCored4.lib;QtGuid4.lib;qtmaind.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>QtCored4.lib;QtGuid4.lib;qtmaind.lib;QAxContainerd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>$(QTDIR)\lib;$(ProjectDir)\PpsDES;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -186,7 +186,7 @@
     <ClCompile>
       <AdditionalOptions>-Zm200 -w34100 -w34189 -w34100 -w34189 %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>.\tmp;$(QTDIR)\include;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtXml;.;.\..\FvQKOLLite;.\LibMUIMaker;.\tmp\moc\$(Configuration);G:\root\git\qt\qt\src\3rdparty;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\tmp;$(QTDIR)\include;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;.;.\..\FvQKOLLite;.\LibMUIMaker;.\tmp\moc\$(Configuration);G:\root\git\qt\qt\src\3rdparty;$(QTDIR)\include\ActiveQt;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;QT_LARGEFILE_SUPPORT;QT_DLL;QT_GUI_LIB;QT_CORE_LIB;QT_THREAD_SUPPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessToFile>false</PreprocessToFile>
       <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
@@ -205,7 +205,7 @@
     </ResourceCompile>
     <Link>
       <AdditionalOptions>"/MANIFESTDEPENDENCY:type=%27win32%27 name=%27Microsoft.Windows.Common-Controls%27 version=%276.0.0.0%27 publicKeyToken=%276595b64144ccf1df%27 language=%27*%27 processorArchitecture=%27*%27" "/MANIFESTDEPENDENCY:type=%27win32%27 name=%27Microsoft.Windows.Common-Controls%27 version=%276.0.0.0%27 publicKeyToken=%276595b64144ccf1df%27 language=%27*%27 processorArchitecture=%27*%27" %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>QtCored4.lib;QtGuid4.lib;qtmaind.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>QtCored4.lib;QtGuid4.lib;qtmaind.lib;QAxContainerd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>$(QTDIR)\lib;$(ProjectDir)\PpsDES;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -225,7 +225,7 @@
     <ClCompile>
       <AdditionalOptions>-Zm200 -w34100 -w34189 -w34100 -w34189 %(AdditionalOptions)</AdditionalOptions>
       <Optimization>MaxSpeed</Optimization>
-      <AdditionalIncludeDirectories>.\tmp;$(QTDIR)\include;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtXml;.;.\..\FvQKOLLite;.\LibMUIMaker;.\tmp\moc\$(Configuration);G:\root\git\qt\qt\src\3rdparty;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\tmp;$(QTDIR)\include;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;.;.\..\FvQKOLLite;.\LibMUIMaker;.\tmp\moc\$(Configuration);G:\root\git\qt\qt\src\3rdparty;$(QTDIR)\include\ActiveQt;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>QT_NO_DEBUG;NDEBUG;_WINDOWS;UNICODE;WIN32;QT_LARGEFILE_SUPPORT;QT_DLL;QT_NO_DEBUG;QT_GUI_LIB;QT_CORE_LIB;QT_THREAD_SUPPORT;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessToFile>false</PreprocessToFile>
       <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
@@ -245,7 +245,7 @@
     </ResourceCompile>
     <Link>
       <AdditionalOptions>"/MANIFESTDEPENDENCY:type=%27win32%27 name=%27Microsoft.Windows.Common-Controls%27 version=%276.0.0.0%27 publicKeyToken=%276595b64144ccf1df%27 language=%27*%27 processorArchitecture=%27*%27" "/MANIFESTDEPENDENCY:type=%27win32%27 name=%27Microsoft.Windows.Common-Controls%27 version=%276.0.0.0%27 publicKeyToken=%276595b64144ccf1df%27 language=%27*%27 processorArchitecture=%27*%27" %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>QtCore4.lib;QtGui4.lib;qtmain.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>QtCore4.lib;QtGui4.lib;qtmain.lib;QAxContainer.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>$(QTDIR)\lib;$(ProjectDir)\PpsDES;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
@@ -265,7 +265,7 @@
     <ClCompile>
       <AdditionalOptions>-Zm200 -w34100 -w34189 -w34100 -w34189 %(AdditionalOptions)</AdditionalOptions>
       <Optimization>MaxSpeed</Optimization>
-      <AdditionalIncludeDirectories>.\tmp;$(QTDIR)\include;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtXml;.;.\..\FvQKOLLite;.\LibMUIMaker;.\tmp\moc\$(Configuration);G:\root\git\qt\qt\src\3rdparty;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\tmp;$(QTDIR)\include;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;.;.\..\FvQKOLLite;.\LibMUIMaker;.\tmp\moc\$(Configuration);G:\root\git\qt\qt\src\3rdparty;$(QTDIR)\include\ActiveQt;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>QT_NO_DEBUG;NDEBUG;_WINDOWS;UNICODE;WIN32;QT_LARGEFILE_SUPPORT;QT_DLL;QT_NO_DEBUG;QT_GUI_LIB;QT_CORE_LIB;QT_THREAD_SUPPORT;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessToFile>false</PreprocessToFile>
       <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
@@ -285,7 +285,7 @@
     </ResourceCompile>
     <Link>
       <AdditionalOptions>"/MANIFESTDEPENDENCY:type=%27win32%27 name=%27Microsoft.Windows.Common-Controls%27 version=%276.0.0.0%27 publicKeyToken=%276595b64144ccf1df%27 language=%27*%27 processorArchitecture=%27*%27" "/MANIFESTDEPENDENCY:type=%27win32%27 name=%27Microsoft.Windows.Common-Controls%27 version=%276.0.0.0%27 publicKeyToken=%276595b64144ccf1df%27 language=%27*%27 processorArchitecture=%27*%27" %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>QtCore4.lib;QtGui4.lib;qtmain.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>QtCore4.lib;QtGui4.lib;qtmain.lib;QAxContainer.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>$(QTDIR)\lib;$(ProjectDir)\PpsDES;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
@@ -305,7 +305,7 @@
     <ClCompile>
       <AdditionalOptions>-Zm200 -w34100 -w34189 -w34100 -w34189 %(AdditionalOptions)</AdditionalOptions>
       <Optimization>MaxSpeed</Optimization>
-      <AdditionalIncludeDirectories>.\tmp;$(QTDIR)\include;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtXml;.;.\..\FvQKOLLite;.\LibMUIMaker;.\tmp\moc\$(Configuration);G:\root\git\qt\qt\src\3rdparty;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\tmp;$(QTDIR)\include;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;.;.\..\FvQKOLLite;.\LibMUIMaker;.\tmp\moc\$(Configuration);G:\root\git\qt\qt\src\3rdparty;$(QTDIR)\include\ActiveQt;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>QT_NO_DEBUG_OUTPUT;QT_NO_DEBUG;NDEBUG;SHIP_BUILD;_WINDOWS;UNICODE;WIN32;QT_LARGEFILE_SUPPORT;QT_DLL;QT_GUI_LIB;QT_CORE_LIB;QT_THREAD_SUPPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessToFile>false</PreprocessToFile>
       <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
@@ -325,7 +325,7 @@
     </ResourceCompile>
     <Link>
       <AdditionalOptions>"/MANIFESTDEPENDENCY:type=%27win32%27 name=%27Microsoft.Windows.Common-Controls%27 version=%276.0.0.0%27 publicKeyToken=%276595b64144ccf1df%27 language=%27*%27 processorArchitecture=%27*%27" "/MANIFESTDEPENDENCY:type=%27win32%27 name=%27Microsoft.Windows.Common-Controls%27 version=%276.0.0.0%27 publicKeyToken=%276595b64144ccf1df%27 language=%27*%27 processorArchitecture=%27*%27" %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>QtCore4.lib;QtGui4.lib;qtmain.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>QtCore4.lib;QtGui4.lib;qtmain.lib;QAxContainer.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>$(QTDIR)\lib;$(ProjectDir)\PpsDES;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
@@ -346,7 +346,7 @@
     <ClCompile>
       <AdditionalOptions>-Zm200 -w34100 -w34189 -w34100 -w34189 %(AdditionalOptions)</AdditionalOptions>
       <Optimization>MaxSpeed</Optimization>
-      <AdditionalIncludeDirectories>.\tmp;$(QTDIR)\include;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtXml;.;.\..\FvQKOLLite;.\LibMUIMaker;.\tmp\moc\$(Configuration);G:\root\git\qt\qt\src\3rdparty;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\tmp;$(QTDIR)\include;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;.;.\..\FvQKOLLite;.\LibMUIMaker;.\tmp\moc\$(Configuration);G:\root\git\qt\qt\src\3rdparty;$(QTDIR)\include\ActiveQt;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>QT_NO_DEBUG_OUTPUT;QT_NO_DEBUG;NDEBUG;SHIP_BUILD;_WINDOWS;UNICODE;WIN32;QT_LARGEFILE_SUPPORT;QT_DLL;QT_GUI_LIB;QT_CORE_LIB;QT_THREAD_SUPPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessToFile>false</PreprocessToFile>
       <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
@@ -366,7 +366,7 @@
     </ResourceCompile>
     <Link>
       <AdditionalOptions>"/MANIFESTDEPENDENCY:type=%27win32%27 name=%27Microsoft.Windows.Common-Controls%27 version=%276.0.0.0%27 publicKeyToken=%276595b64144ccf1df%27 language=%27*%27 processorArchitecture=%27*%27" "/MANIFESTDEPENDENCY:type=%27win32%27 name=%27Microsoft.Windows.Common-Controls%27 version=%276.0.0.0%27 publicKeyToken=%276595b64144ccf1df%27 language=%27*%27 processorArchitecture=%27*%27" %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>QtCore4.lib;QtGui4.lib;qtmain.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>QtCore4.lib;QtGui4.lib;qtmain.lib;QAxContainer.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>$(QTDIR)\lib;$(ProjectDir)\PpsDES;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
@@ -380,18 +380,20 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">
     <Link>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>QAxContainer.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ClCompile>
       <PreprocessorDefinitions>QT_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(QTDIR)\include\ActiveQt;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Template|x64'">
     <Link>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>QAxContainer.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ClCompile>
       <PreprocessorDefinitions>QT_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(QTDIR)\include\ActiveQt;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -402,6 +404,7 @@
     <ClCompile Include="GBINObj.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainUnt.cpp" />
+    <ClCompile Include="MainUntExchange.cpp" />
     <ClCompile Include="STCM2Obj.cpp" />
     <ClCompile Include="tmp\qrc_FFUExporter.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -430,6 +433,8 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Shipping|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Shipping|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Template|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="tmp\moc\Release\moc_EncodingConvUnt.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -444,6 +449,8 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Shipping|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Shipping|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Template|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="tmp\moc\Shipping\moc_EncodingConvUnt.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -458,6 +465,8 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Template|x64'">true</ExcludedFromBuild>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -467,30 +476,24 @@
     <CustomBuild Include="EncodingConvUnt.h">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing EncodingConvUnt.h...</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing EncodingConvUnt.h...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\tmp\moc\$(Configuration)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT "-I.\tmp" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtXml" "-I." "-I.\..\FvQKOLLite" "-I.\LibMUIMaker" "-I.\tmp\moc\$(Configuration)\." "-IG:\root\git\qt\qt\src\3rdparty"
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\tmp\moc\$(Configuration)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT "-I.\tmp" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtXml" "-I." "-I.\..\FvQKOLLite" "-I.\LibMUIMaker" "-I.\tmp\moc\$(Configuration)\." "-IG:\root\git\qt\qt\src\3rdparty"
-</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\tmp\moc\$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT  "-I.\tmp" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I." "-I.\..\FvQKOLLite" "-I.\LibMUIMaker" "-I.\tmp\moc\$(Configuration)\." "-IG:\root\git\qt\qt\src\3rdparty" "-I$(QTDIR)\include\ActiveQt"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\tmp\moc\$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT  "-I.\tmp" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I." "-I.\..\FvQKOLLite" "-I.\LibMUIMaker" "-I.\tmp\moc\$(Configuration)\." "-IG:\root\git\qt\qt\src\3rdparty" "-I$(QTDIR)\include\ActiveQt"</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);%(AdditionalInputs)</AdditionalInputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath);%(AdditionalInputs)</AdditionalInputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\tmp\moc\$(Configuration)\moc_%(Filename).cpp;%(Outputs)</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\tmp\moc\$(Configuration)\moc_%(Filename).cpp;%(Outputs)</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing EncodingConvUnt.h...</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing EncodingConvUnt.h...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\tmp\moc\$(Configuration)\moc_%(Filename).cpp"  -DQT_NO_DEBUG -DNDEBUG -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT "-I.\tmp" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtXml" "-I." "-I.\..\FvQKOLLite" "-I.\LibMUIMaker" "-I.\tmp\moc\$(Configuration)\." "-IG:\root\git\qt\qt\src\3rdparty"
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\tmp\moc\$(Configuration)\moc_%(Filename).cpp"  -DQT_NO_DEBUG -DNDEBUG -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT "-I.\tmp" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtXml" "-I." "-I.\..\FvQKOLLite" "-I.\LibMUIMaker" "-I.\tmp\moc\$(Configuration)\." "-IG:\root\git\qt\qt\src\3rdparty"
-</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\tmp\moc\$(ConfigurationName)\moc_%(Filename).cpp"  -DQT_NO_DEBUG -DNDEBUG -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT  "-I.\tmp" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I." "-I.\..\FvQKOLLite" "-I.\LibMUIMaker" "-I.\tmp\moc\$(Configuration)\." "-IG:\root\git\qt\qt\src\3rdparty" "-I$(QTDIR)\include\ActiveQt"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\tmp\moc\$(ConfigurationName)\moc_%(Filename).cpp"  -DQT_NO_DEBUG -DNDEBUG -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT  "-I.\tmp" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I." "-I.\..\FvQKOLLite" "-I.\LibMUIMaker" "-I.\tmp\moc\$(Configuration)\." "-IG:\root\git\qt\qt\src\3rdparty" "-I$(QTDIR)\include\ActiveQt"</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);%(AdditionalInputs)</AdditionalInputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath);%(AdditionalInputs)</AdditionalInputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\tmp\moc\$(Configuration)\moc_%(Filename).cpp;%(Outputs)</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\tmp\moc\$(Configuration)\moc_%(Filename).cpp;%(Outputs)</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Shipping|Win32'">Moc%27ing EncodingConvUnt.h...</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Shipping|x64'">Moc%27ing EncodingConvUnt.h...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Shipping|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\tmp\moc\$(Configuration)\moc_%(Filename).cpp"  -DQT_NO_DEBUG_OUTPUT -DQT_NO_DEBUG -DNDEBUG -DSHIP_BUILD -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT "-I.\tmp" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtXml" "-I." "-I.\..\FvQKOLLite" "-I.\LibMUIMaker" "-I.\tmp\moc\$(Configuration)\." "-IG:\root\git\qt\qt\src\3rdparty"
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Shipping|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\tmp\moc\$(Configuration)\moc_%(Filename).cpp"  -DQT_NO_DEBUG_OUTPUT -DQT_NO_DEBUG -DNDEBUG -DSHIP_BUILD -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT "-I.\tmp" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtXml" "-I." "-I.\..\FvQKOLLite" "-I.\LibMUIMaker" "-I.\tmp\moc\$(Configuration)\." "-IG:\root\git\qt\qt\src\3rdparty"
-</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Shipping|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\tmp\moc\$(ConfigurationName)\moc_%(Filename).cpp"  -DQT_NO_DEBUG_OUTPUT -DQT_NO_DEBUG -DNDEBUG -DSHIP_BUILD -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT  "-I.\tmp" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I." "-I.\..\FvQKOLLite" "-I.\LibMUIMaker" "-I.\tmp\moc\$(Configuration)\." "-IG:\root\git\qt\qt\src\3rdparty" "-I$(QTDIR)\include\ActiveQt"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Shipping|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\tmp\moc\$(ConfigurationName)\moc_%(Filename).cpp"  -DQT_NO_DEBUG_OUTPUT -DQT_NO_DEBUG -DNDEBUG -DSHIP_BUILD -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT  "-I.\tmp" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I." "-I.\..\FvQKOLLite" "-I.\LibMUIMaker" "-I.\tmp\moc\$(Configuration)\." "-IG:\root\git\qt\qt\src\3rdparty" "-I$(QTDIR)\include\ActiveQt"</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Shipping|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);%(AdditionalInputs)</AdditionalInputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Shipping|x64'">$(QTDIR)\bin\moc.exe;%(FullPath);%(AdditionalInputs)</AdditionalInputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Shipping|Win32'">.\tmp\moc\$(Configuration)\moc_%(Filename).cpp;%(Outputs)</Outputs>
@@ -503,30 +506,24 @@
     <CustomBuild Include="MainUnt.h">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing MainUnt.h...</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing MainUnt.h...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\tmp\moc\$(Configuration)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT "-I.\tmp" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtXml" "-I." "-I.\..\FvQKOLLite" "-I.\LibMUIMaker" "-I.\tmp\moc\$(Configuration)\." "-IG:\root\git\qt\qt\src\3rdparty"
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\tmp\moc\$(Configuration)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT "-I.\tmp" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtXml" "-I." "-I.\..\FvQKOLLite" "-I.\LibMUIMaker" "-I.\tmp\moc\$(Configuration)\." "-IG:\root\git\qt\qt\src\3rdparty"
-</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\tmp\moc\$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT  "-I.\tmp" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I." "-I.\..\FvQKOLLite" "-I.\LibMUIMaker" "-I.\tmp\moc\$(Configuration)\." "-IG:\root\git\qt\qt\src\3rdparty" "-I$(QTDIR)\include\ActiveQt"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\tmp\moc\$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT  "-I.\tmp" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I." "-I.\..\FvQKOLLite" "-I.\LibMUIMaker" "-I.\tmp\moc\$(Configuration)\." "-IG:\root\git\qt\qt\src\3rdparty" "-I$(QTDIR)\include\ActiveQt"</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);%(AdditionalInputs)</AdditionalInputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath);%(AdditionalInputs)</AdditionalInputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\tmp\moc\$(Configuration)\moc_%(Filename).cpp;%(Outputs)</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\tmp\moc\$(Configuration)\moc_%(Filename).cpp;%(Outputs)</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing MainUnt.h...</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing MainUnt.h...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\tmp\moc\$(Configuration)\moc_%(Filename).cpp"  -DQT_NO_DEBUG -DNDEBUG -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT "-I.\tmp" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtXml" "-I." "-I.\..\FvQKOLLite" "-I.\LibMUIMaker" "-I.\tmp\moc\$(Configuration)\." "-IG:\root\git\qt\qt\src\3rdparty"
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\tmp\moc\$(Configuration)\moc_%(Filename).cpp"  -DQT_NO_DEBUG -DNDEBUG -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT "-I.\tmp" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtXml" "-I." "-I.\..\FvQKOLLite" "-I.\LibMUIMaker" "-I.\tmp\moc\$(Configuration)\." "-IG:\root\git\qt\qt\src\3rdparty"
-</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\tmp\moc\$(ConfigurationName)\moc_%(Filename).cpp"  -DQT_NO_DEBUG -DNDEBUG -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT  "-I.\tmp" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I." "-I.\..\FvQKOLLite" "-I.\LibMUIMaker" "-I.\tmp\moc\$(Configuration)\." "-IG:\root\git\qt\qt\src\3rdparty" "-I$(QTDIR)\include\ActiveQt"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\tmp\moc\$(ConfigurationName)\moc_%(Filename).cpp"  -DQT_NO_DEBUG -DNDEBUG -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT  "-I.\tmp" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I." "-I.\..\FvQKOLLite" "-I.\LibMUIMaker" "-I.\tmp\moc\$(Configuration)\." "-IG:\root\git\qt\qt\src\3rdparty" "-I$(QTDIR)\include\ActiveQt"</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);%(AdditionalInputs)</AdditionalInputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath);%(AdditionalInputs)</AdditionalInputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\tmp\moc\$(Configuration)\moc_%(Filename).cpp;%(Outputs)</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\tmp\moc\$(Configuration)\moc_%(Filename).cpp;%(Outputs)</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Shipping|Win32'">Moc%27ing MainUnt.h...</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Shipping|x64'">Moc%27ing MainUnt.h...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Shipping|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\tmp\moc\$(Configuration)\moc_%(Filename).cpp"  -DQT_NO_DEBUG_OUTPUT -DQT_NO_DEBUG -DNDEBUG -DSHIP_BUILD -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT  "-I.\tmp" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtXml" "-I." "-I.\..\FvQKOLLite" "-I.\LibMUIMaker" "-I.\tmp\moc\$(Configuration)\." "-IG:\root\git\qt\qt\src\3rdparty"
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Shipping|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\tmp\moc\$(Configuration)\moc_%(Filename).cpp"  -DQT_NO_DEBUG_OUTPUT -DQT_NO_DEBUG -DNDEBUG -DSHIP_BUILD -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT  "-I.\tmp" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtXml" "-I." "-I.\..\FvQKOLLite" "-I.\LibMUIMaker" "-I.\tmp\moc\$(Configuration)\." "-IG:\root\git\qt\qt\src\3rdparty"
-</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Shipping|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\tmp\moc\$(ConfigurationName)\moc_%(Filename).cpp"  -DQT_NO_DEBUG_OUTPUT -DQT_NO_DEBUG -DNDEBUG -DSHIP_BUILD -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT  "-I.\tmp" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I." "-I.\..\FvQKOLLite" "-I.\LibMUIMaker" "-I.\tmp\moc\$(Configuration)\." "-IG:\root\git\qt\qt\src\3rdparty" "-I$(QTDIR)\include\ActiveQt"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Shipping|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\tmp\moc\$(ConfigurationName)\moc_%(Filename).cpp"  -DQT_NO_DEBUG_OUTPUT -DQT_NO_DEBUG -DNDEBUG -DSHIP_BUILD -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT  "-I.\tmp" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I." "-I.\..\FvQKOLLite" "-I.\LibMUIMaker" "-I.\tmp\moc\$(Configuration)\." "-IG:\root\git\qt\qt\src\3rdparty" "-I$(QTDIR)\include\ActiveQt"</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Shipping|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);%(AdditionalInputs)</AdditionalInputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Shipping|x64'">$(QTDIR)\bin\moc.exe;%(FullPath);%(AdditionalInputs)</AdditionalInputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Shipping|Win32'">.\tmp\moc\$(Configuration)\moc_%(Filename).cpp;%(Outputs)</Outputs>
@@ -1209,7 +1206,7 @@
   </ImportGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties MocDir=".\tmp\moc\$(ConfigurationName)" QtVersion_x0020_Win32="Qt 4.8.7 vs2010 x86" RccDir=".\tmp" QtVersion_x0020_x64="Qt 4.8.7 vs2010 x64" />
+      <UserProperties MocDir=".\tmp\moc\$(ConfigurationName)" QtVersion_x0020_Win32="Qt 4.8.7 vs2010 x86" RccDir=".\tmp" QtVersion_x0020_x64="Qt 4.8.7 vc2010 x64 NG" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

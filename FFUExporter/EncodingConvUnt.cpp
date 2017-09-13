@@ -17,12 +17,6 @@ ui(new Ui::TEncodingConvFrm)
     QPalette palette;
     palette.setColor(QPalette::Base, palette.color(QPalette::Window));
     //ui->inputFnameEdt->setPalette(palette);
-
-    QString s2312filename = QApplication::applicationDirPath() + "/freeshift2312.txt";
-    QString pscharfilename = QApplication::applicationDirPath() + "/adv2312ex_forPS_UTF16.txt";
-    QString ffucharfilename = QApplication::applicationDirPath() + "/advfont29x37_charmap.txt";
-
-    LoadTables(s2312filename, pscharfilename, ffucharfilename);
 }
 
 TEncodingConvFrm::~TEncodingConvFrm()
@@ -45,6 +39,15 @@ void TEncodingConvFrm::changeEvent(QEvent *e)
 void TEncodingConvFrm::onLoadTableClicked()
 {
 
+}
+
+void TEncodingConvFrm::loadDebugTables()
+{
+    QString s2312filename = QApplication::applicationDirPath() + "/freeshift2312.txt";
+    QString pscharfilename = QApplication::applicationDirPath() + "/adv2312ex_forPS_UTF16.txt";
+    QString ffucharfilename = QApplication::applicationDirPath() + "/advfont29x37_charmap.txt";
+
+    LoadTables(s2312filename, pscharfilename, ffucharfilename);
 }
 
 void TEncodingConvFrm::onStringValueModified()
@@ -151,6 +154,7 @@ void TEncodingConvFrm::LoadTables( const QString& s2312filename, const QString& 
     if (!codec) {
         AddLog("Shift-JIS codec is unavailable", ltError);
         qDebug() << QTextCodec::availableCodecs();
+        return;
     }
 
     int ffunonkanjicount = 0;

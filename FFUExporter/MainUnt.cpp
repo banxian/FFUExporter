@@ -7,6 +7,7 @@
 #include <intrin.h>
 #include <QtCore/QDateTime>
 #include <QtGui/QPainter>
+#include <QtGui/QMessageBox>
 #include <vector>
 #include "FFUTypes.h"
 #include "FFUObj.h"
@@ -698,6 +699,8 @@ void TMainFrm::onStringEncodingConvClicked()
     QObject::connect(converterfrm, SIGNAL(logStored(QString, TLogType)),
         this, SLOT(writeLog(QString, TLogType)));
 
+    QMetaObject::invokeMethod(converterfrm, "loadDebugTables"); // Qt::QueuedConnection
+
     converterfrm->show();
 }
 
@@ -715,7 +718,7 @@ void TMainFrm::onGBINConvertClicked()
     QByteArray gbnbbuf = gbnbfile.readAll();
     gbnbfile.close();
 
-    unsigned __int32 magic = *(unsigned __int32*)(gbnbbuf.data() + gbnbbuf.size() - 0x40);
+    uint32_t magic = *(uint32_t*)(gbnbbuf.data() + gbnbbuf.size() - 0x40);
 
     if (magic != 'BNBG') {
         writeLog("not a bigendian GBIN file.", ltDebug);
@@ -727,7 +730,7 @@ void TMainFrm::onGBINConvertClicked()
         return;
     }
     GBINHeaderFooter* header = (GBINHeaderFooter*)(gbnbbuf.data() + gbnbbuf.size() - 0x40);
-    *(unsigned __int32*)header = 'LNBG';
+    *(uint32_t*)header = 'LNBG';
     header->endian_06 = 0; // from 3 to 0
 
     gbinfilename = QFileDialog::getSaveFileName(this, tr("Save Little-endian GBIN File as"), PathSetting.LastGBINFolder, "GBIN Files (*.gbin);;All Files (*.*)", 0, 0);
@@ -793,6 +796,18 @@ void TMainFrm::onExtractScriptsStringsClicked()
     }
 }
 
+
+void TMainFrm::PopupErrorHint(const QString& title, const QString& content)
+{
+    QMessageBox msgBox;
+    msgBox.setText(title);
+    msgBox.setInformativeText(content);
+    msgBox.setWindowIcon(this->windowIcon());
+    msgBox.setIcon(QMessageBox::Warning);
+    msgBox.setStandardButtons(QMessageBox::Ok);
+    msgBox.setDefaultButton(QMessageBox::Ok);
+    msgBox.exec();
+}
 
 //////////////////////////////////////////////////////////////////////////
 // End of world

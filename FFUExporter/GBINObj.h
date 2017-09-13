@@ -48,4 +48,6 @@ signed int func_gbin_normalize_endian(const void *buf, size_t len, void *outhead
 void func_swapendian_len(unsigned char *buf, int len);
 void func_gbin_swap_structitem(unsigned char *structitems, GBINTypeDescriptor *types, int headerrevc, int headerrev30);
 
+const char* GBINType2Str(GBINType type);
+
 #endif
