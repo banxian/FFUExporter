@@ -198,6 +198,7 @@
     </property>
     <addaction name="actionGenerateFakeSJISCode"/>
     <addaction name="actionGBINtoExcel"/>
+    <addaction name="actionExceltoGBIN"/>
     <addaction name="actionExtractDatabaseString"/>
     <addaction name="actionMergeDatabaseFolder"/>
    </widget>
@@ -380,6 +381,18 @@
     <string>Merge database Folder and Localized String</string>
    </property>
   </action>
+  <action name="actionExceltoGBIN">
+   <property name="icon">
+    <iconset resource="FFUExporter.qrc">
+     <normaloff>:/MainFrm/PpsDES/24x24-gnome/document.png</normaloff>:/MainFrm/PpsDES/24x24-gnome/document.png</iconset>
+   </property>
+   <property name="text">
+    <string>Excel to GBIN</string>
+   </property>
+   <property name="toolTip">
+    <string>Generate gbin/gstr from excel file</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
@@ -546,6 +559,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionExceltoGBIN</sender>
+   <signal>triggered()</signal>
+   <receiver>TMainFrm</receiver>
+   <slot>onExcel2GBINClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>459</x>
+     <y>343</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>onOpenFFUClicked()</slot>
@@ -558,5 +587,6 @@
   <slot>onGBIN2ExcelClicked()</slot>
   <slot>onExtractDatabasesStringsClicked()</slot>
   <slot>onMergeDatabaseFolderClicked()</slot>
+  <slot>onExcel2GBINClicked()</slot>
  </slots>
 </ui>

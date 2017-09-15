@@ -7,7 +7,7 @@
 
 enum GBINType
 {
-    gtUINT32 = 0x0,
+    gtULONG = 0x0,
     gtUINT8 = 0x1,
     gtUINT16 = 0x2,
     gtFLOAT = 0x3,
@@ -27,16 +27,16 @@ struct GBINHeaderFooter
     uint8_t endian_06;
     uint8_t field_07;
     uint32_t field_08;
-    uint32_t field_0c;
+    uint32_t longsize;
     uint32_t flags;
     uint32_t struct_offset;
     uint32_t struct_count;
     uint32_t struct_size;
     uint32_t types_count;
     uint32_t types_offset;
-    uint32_t field_28;
+    uint32_t string_count; // set
     uint32_t string_offset;
-    int16_t field_30;
+    int16_t ptrsize;
     uint16_t field_32;
     uint32_t padding[3];
 };
@@ -88,7 +88,7 @@ public:
     bool ContainsText();
     bool SaveToBuffer(QByteArray& buf);
     bool ReplaceString(int row, int column, const std::string& newstr);// ReplaceText conflicted with windows api
-    bool ReplaceUInt32(int row, int column, const unsigned int newval);
+    bool ReplaceULONG(int row, int column, const unsigned int newval);
 };
 
 signed int func_gbin_normalize_endian(void *buf, size_t len, void *outheader);
@@ -97,5 +97,7 @@ void func_swapendian_len(unsigned char *buf, int len);
 void func_gbin_swap_structitem(unsigned char *structitems, GBINTypeDescriptor *types, int headerrevc, int headerrev30);
 
 const char* GBINType2Str(GBINType type);
+uint16_t GBINTypeFromStr(const char* name);
 
+void paddingqbytearray( QByteArray &recordsbuf, int recordsbufsize );
 #endif

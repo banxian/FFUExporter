@@ -42,6 +42,7 @@ private slots:
     void onGBINConvertClicked();
     void onExtractScriptsStringsClicked();
     void onGBIN2ExcelClicked();
+    void onExcel2GBINClicked();
     void onExtractDatabasesStringsClicked();
     void onMergeDatabaseFolderClicked();
 

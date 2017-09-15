@@ -4,6 +4,7 @@
 #include <QString>
 #include <QHash>
 #include <math.h>
+#include <QDebug>
 
 
 signed int func_gbin_normalize_endian(void *buf, size_t len, void *outheader)
@@ -19,19 +20,19 @@ signed int func_gbin_normalize_endian(void *buf, size_t len, void *outheader)
 
     // big-endian
     if ( header->magic[3] == 'B' && !(header->endian_06 & 1) ) {
-        func_swapendian_len((uint8_t *)&header->field_04, 2);
+        func_swapendian_len((uint8_t *)&header->field_04, 2);   // short
         func_swapendian_len((uint8_t *)&header->field_08, 4);
-        func_swapendian_len((uint8_t *)&header->field_0c, 4);
+        func_swapendian_len((uint8_t *)&header->longsize, 4);   // native longsize, used mostly
         func_swapendian_len((uint8_t *)&header->flags, 4);
         func_swapendian_len((uint8_t *)&header->struct_offset, 4);
         func_swapendian_len((uint8_t *)&header->struct_count, 4);
         func_swapendian_len((uint8_t *)&header->struct_size, 4);
         func_swapendian_len((uint8_t *)&header->types_count, 4); // types_count is dword
         func_swapendian_len((uint8_t *)&header->types_offset, 4);
-        func_swapendian_len((uint8_t *)&header->field_28, 4);
+        func_swapendian_len((uint8_t *)&header->string_count, 4);
         func_swapendian_len((uint8_t *)&header->string_offset, 4);
-        func_swapendian_len((uint8_t *)&header->field_30, 2);
-        int types_count = (signed __int16)header->types_count; // Load DWORD, use short
+        func_swapendian_len((uint8_t *)&header->ptrsize, 2);    // short
+        int types_count = (signed __int16)header->types_count;  // Load DWORD, use short
         if ( types_count > 0 ) {
             int typesdelta = 0;
             int types_counter = (signed __int16)header->types_count;
@@ -43,11 +44,11 @@ signed int func_gbin_normalize_endian(void *buf, size_t len, void *outheader)
                 typesdelta += 4;
             } while ( types_counter );
         }
-        int rev30 = 4;
-        int revc = header->field_0c;                               // always 4, alignment or var int32 length
+        int ptrsize = 4;
+        int longsize = header->longsize;                               // always 4, alignment or var int32 length
         signed int struct_count = header->struct_count;
-        if ( header->field_30 )  {
-            rev30 = header->field_30;                          // zero or 4, affect to type4, string
+        if ( header->ptrsize )  {
+            ptrsize = header->ptrsize;                          // zero or 4, affect to type4, string
         }
         for ( signed int i = 0; i < struct_count; ++i ) {
             unsigned char* structitem = 0;
@@ -59,7 +60,7 @@ signed int func_gbin_normalize_endian(void *buf, size_t len, void *outheader)
                 int typesdelta2 = 0;
                 int types_counter = types_count;
                 do {
-                    func_gbin_swap_structitem(structitem, (GBINTypeDescriptor *)&buff[header->types_offset + typesdelta2], revc, rev30);
+                    func_gbin_swap_structitem(structitem, (GBINTypeDescriptor *)&buff[header->types_offset + typesdelta2], longsize, ptrsize);
                     --types_counter;
                     typesdelta2 += 4;
                 } while ( types_counter );
@@ -142,11 +143,11 @@ signed int func_gbin_to_big_endian(void *buf, size_t len)
     // big-endian
     if ( header->magic[3] == 'L' && !(header->endian_06 & 1) ) {
         int types_count = (signed __int16)header->types_count; // Load DWORD, use short
-        int rev30 = 4;
-        int revc = header->field_0c;                               // always 4, alignment or var int32 length
+        int ptrsize = 4;
+        int longsize = header->longsize;                               // always 4, alignment or var int32 length
         signed int struct_count = header->struct_count;
-        if ( header->field_30 )  {
-            rev30 = header->field_30;                          // zero or 4, affect to type4, string
+        if ( header->ptrsize )  {
+            ptrsize = header->ptrsize;                          // zero or 4, affect to type4, string
         }
         for ( signed int i = 0; i < struct_count; ++i ) {
             unsigned char* structitem = 0;
@@ -158,7 +159,7 @@ signed int func_gbin_to_big_endian(void *buf, size_t len)
                 int typesdelta2 = 0;
                 int types_counter = types_count;
                 do {
-                    func_gbin_swap_structitem(structitem, (GBINTypeDescriptor *)&buff[header->types_offset + typesdelta2], revc, rev30);
+                    func_gbin_swap_structitem(structitem, (GBINTypeDescriptor *)&buff[header->types_offset + typesdelta2], longsize, ptrsize);
                     --types_counter;
                     typesdelta2 += 4;
                 } while ( types_counter );
@@ -177,16 +178,16 @@ signed int func_gbin_to_big_endian(void *buf, size_t len)
         }
         func_swapendian_len((uint8_t *)&header->field_04, 2);
         func_swapendian_len((uint8_t *)&header->field_08, 4);
-        func_swapendian_len((uint8_t *)&header->field_0c, 4);
+        func_swapendian_len((uint8_t *)&header->longsize, 4); // native long
         func_swapendian_len((uint8_t *)&header->flags, 4);
         func_swapendian_len((uint8_t *)&header->struct_offset, 4);
         func_swapendian_len((uint8_t *)&header->struct_count, 4);
         func_swapendian_len((uint8_t *)&header->struct_size, 4);
         func_swapendian_len((uint8_t *)&header->types_count, 4); // types_count is dword
         func_swapendian_len((uint8_t *)&header->types_offset, 4);
-        func_swapendian_len((uint8_t *)&header->field_28, 4);
+        func_swapendian_len((uint8_t *)&header->string_count, 4);
         func_swapendian_len((uint8_t *)&header->string_offset, 4);
-        func_swapendian_len((uint8_t *)&header->field_30, 2);
+        func_swapendian_len((uint8_t *)&header->ptrsize, 2);
 
         header->magic[3] = 'B';
     }
@@ -210,26 +211,25 @@ void func_swapendian_len(unsigned char *buf, int len)
     }
 }
 
-void func_gbin_swap_structitem(unsigned char *structitems, GBINTypeDescriptor *types, int headerrevc, int headerrev30)
+void func_gbin_swap_structitem(unsigned char *structitems, GBINTypeDescriptor *types, int longsize, int ptrsize)
 {
-
     switch (types->type) {
-    case gtUINT32:
-        // not uint, just record with length field
+    case gtULONG:
+        // must be a POD field. maybe native long
         {
-            int lenfielddiv2 = headerrevc >> 1;
-            unsigned char *len32ptr = &structitems[types->offset];
+            int swapcount = longsize >> 1;
+            unsigned char *fieldptr = &structitems[types->offset];
             int i = 0;
-            if (headerrevc >> 1 > 0) {
+            if (longsize >> 1 > 0) {
                 // 4?
-                unsigned char* tail = &len32ptr[headerrevc];
+                unsigned char* tail = &fieldptr[longsize];
                 do {
                     // useless now
                     unsigned char* looptail = &tail[-i++]; // 4
                     unsigned char b3 = *(looptail - 1); // 3<->0, 2<->1
-                    *(looptail - 1) = *len32ptr; // 3 <- 0
-                    *len32ptr++ = b3; // 0 -> 3
-                } while (i < lenfielddiv2);
+                    *(looptail - 1) = *fieldptr; // 3 <- 0
+                    *fieldptr++ = b3; // 0 -> 3
+                } while (i < swapcount);
             }
         }
         break;
@@ -259,41 +259,41 @@ void func_gbin_swap_structitem(unsigned char *structitems, GBINTypeDescriptor *t
     case gtTYPE4:
         // var int32?
         {
-            int rev30div2 = headerrev30 >> 1;
-            unsigned char *len2ptr = &structitems[types->offset];
-            int j = 0;
-            if (headerrev30 >> 1 > 0) {
-                unsigned char* tail2 = &len2ptr[headerrev30];
+            int swapcount = ptrsize >> 1;
+            unsigned char *offptr = &structitems[types->offset];
+            int i = 0;
+            if (ptrsize >> 1 > 0) {
+                unsigned char* tail = &offptr[ptrsize];
                 do {
-                    unsigned char* tail2a = &tail2[-j++];
-                    unsigned char tb3 = *(tail2a - 1);
-                    *(tail2a - 1) = *len2ptr;
-                    *len2ptr++ = tb3;
-                } while (j < rev30div2);
+                    unsigned char* tail2 = &tail[-i++];
+                    unsigned char tb3 = *(tail2 - 1);
+                    *(tail2 - 1) = *offptr;
+                    *offptr++ = tb3;
+                } while (i < swapcount);
             }
         }
         break;
     case gtSTRING:
-        // have size/offset header.
+        // size should be int_ptr
         {
-            int rev30div2 = headerrev30 >> 1;
-            unsigned char* lenstrptr = &structitems[types->offset];
-            int k = 0;
-            if (headerrev30 >> 1 > 0) {
-                unsigned char* tail3 = &lenstrptr[headerrev30];
+            int swapcount = ptrsize >> 1;
+            unsigned char* offptr = &structitems[types->offset];
+            int i = 0;
+            if (ptrsize >> 1 > 0) {
+                unsigned char* tail = &offptr[ptrsize];
                 do {
-                    unsigned char* tail3a = &tail3[-k++];
-                    unsigned char prev = *(tail3a - 1);
-                    *(tail3a - 1) = *lenstrptr;
-                    *lenstrptr++ = prev;
-                } while (k < rev30div2);
+                    unsigned char* tail2 = &tail[-i++];
+                    unsigned char tb3 = *(tail2 - 1);
+                    *(tail2 - 1) = *offptr;
+                    *offptr++ = tb3;
+                } while (i < swapcount);
             }
         }
         break;
     case gtUINT64: // or double
         // fixed length
         {
-            signed int counter = 2;
+            signed int swapcount = 2;
             unsigned char* t6ptr1 = &structitems[types->offset];
             unsigned char* t6ptr2 = &structitems[types->offset];
             // 7<->0
@@ -301,7 +301,7 @@ void func_gbin_swap_structitem(unsigned char *structitems, GBINTypeDescriptor *t
             // 5<->2
             // 4<->3
             do {
-                --counter;
+                --swapcount;
                 char b7 = t6ptr1[7];
                 t6ptr1[7] = *t6ptr2; // 7 <-> 0
                 *t6ptr2 = b7;
@@ -310,7 +310,7 @@ void func_gbin_swap_structitem(unsigned char *structitems, GBINTypeDescriptor *t
                 t6ptr1 -= 2;
                 t6ptr2[1] = b6;
                 t6ptr2 += 2;
-            } while (counter);
+            } while (swapcount);
         }
         break;
     case gtFIXINT32:
@@ -329,7 +329,7 @@ void func_gbin_swap_structitem(unsigned char *structitems, GBINTypeDescriptor *t
 }
 
 const char* GBINTypeNames[] = {
-    "gtUINT32",
+    "gtULONG",
     "gtUINT8",
     "gtUINT16",
     "gtFLOAT",
@@ -346,6 +346,16 @@ const char* GBINType2Str( GBINType type )
     } else {
         return 0;
     }
+}
+
+uint16_t GBINTypeFromStr( const char* name )
+{
+    for (uint16_t i = gtULONG; i <= gtFIXINT32; i++) {
+        if (strcmp(name, GBINTypeNames[i - gtULONG]) == 0) {
+            return i;
+        }
+    }
+    return 0xFFFF;
 }
 
 bool GBINStore::LoadFromBuffer( void* buf, unsigned int size )
@@ -381,10 +391,17 @@ bool GBINStore::LoadFromBuffer( void* buf, unsigned int size )
         if (types->type == gtSTRING) {
             fMayhaveText = true;
         }
+        if (types->type != gtSTRING && types->type != gtULONG && types->type != gtFLOAT) {
+            qDebug() << GBINType2Str((GBINType)types->type);
+        }
     }
     if ((header->flags & 1)) {
         // have string table
     }
+    if (header->longsize != 4 || header->ptrsize != 4) {
+        qDebug() << "longsize:" << header->longsize << "ptrsize:" << header->ptrsize;
+    }
+
     const char* strtables = buffer + header->string_offset;
     const char* structptr = buffer + header->struct_offset;
 
@@ -395,7 +412,7 @@ bool GBINStore::LoadFromBuffer( void* buf, unsigned int size )
             GBINFieldRecItem fielditem;
             fielditem.rawdata.append(fieldptr, it->size); // empty = assign
 
-            if (it->type == gtUINT32) {
+            if (it->type == gtULONG) {
                 fielditem.u32rec = *(uint32_t*)fieldptr;
             } else if (it->type == gtSTRING) {
                 uint32_t offset = *(uint32_t*)fieldptr;
@@ -449,6 +466,14 @@ bool GBINStore::ContainsText()
     return fMayhaveText && (fComplexRecords.empty() == false);
 }
 
+
+void paddingqbytearray( QByteArray &recordsbuf, int recordsbufsize )
+{
+    int oldlen = recordsbuf.size();
+    recordsbuf.resize(recordsbufsize);
+    memset(recordsbuf.data() + oldlen, 0, recordsbufsize - oldlen);
+}
+
 bool GBINStore::SaveToBuffer( QByteArray& buf )
 {
     // GBIN = Records + FieldDefine + StringTable + Header
@@ -487,9 +512,11 @@ bool GBINStore::SaveToBuffer( QByteArray& buf )
                         (*it)[i].u32rec = sit.value();
                     }
                     // TODO: string may have 4 or 8 byte offset (reserve for 64bit library?!)
+                    (*it)[i].rawdata.fill(0);
                     *(uint32_t*)((*it)[i].rawdata.data()) = (*it)[i].u32rec;
                 }
-                if (fit->type == gtUINT32) {
+                if (fit->type == gtULONG) {
+                    (*it)[i].rawdata.fill(0);
                     *(uint32_t*)((*it)[i].rawdata.data()) = (*it)[i].u32rec;
                 }
                 recordsbuf.append((*it)[i].rawdata);
@@ -506,9 +533,12 @@ bool GBINStore::SaveToBuffer( QByteArray& buf )
     int fielddefsize = ((sizeof(GBINTypeDescriptor) * fFieldDefines.size() + 15)/16)*16;
     newheader.struct_count = fComplexRecords.size();
     newheader.types_count = fFieldDefines.size();
-    recordsbuf.resize(recordsbufsize); // TODO: memset
-    fieldbuf.resize(fielddefsize);
-    stringtable.resize(stringtablesize);
+    //recordsbuf.resize(recordsbufsize); // TODO: memset
+    //fieldbuf.resize(fielddefsize);
+    //stringtable.resize(stringtablesize);
+    paddingqbytearray(recordsbuf, recordsbufsize);
+    paddingqbytearray(fieldbuf, fielddefsize);
+    paddingqbytearray(stringtable, stringtablesize);
     if (fFileType == ftGSTL || fFileType == ftGSTB) {
         // Header + Records + FieldDefine + StringTable
         newheader.struct_offset = sizeof(GBINHeaderFooter);
@@ -547,10 +577,10 @@ bool GBINStore::ReplaceString( int row, int column, const std::string& newstr )
     return false;
 }
 
-bool GBINStore::ReplaceUInt32( int row, int column, const unsigned int newval )
+bool GBINStore::ReplaceULONG( int row, int column, const unsigned int newval )
 {
     if (row < fComplexRecords.size() && column < fFieldDefines.size()) {
-        if (fFieldDefines[column].type == gtUINT32) {
+        if (fFieldDefines[column].type == gtULONG) {
             fComplexRecords[row][column].u32rec = newval;
             return true;
         }

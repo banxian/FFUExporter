@@ -746,7 +746,6 @@ void TMainFrm::onGBINConvertClicked()
     gbnlfile.open(QFile::WriteOnly);
     gbnlfile.write(gbnbbuf);
     gbnlfile.close();
-
 }
 
 
