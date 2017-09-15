@@ -252,7 +252,7 @@ void TMainFrm::onOpenFFUClicked()
     //image.convertToFormat(QImage::Format_ARGB32).save(fileinfo.path() + "/" + fileinfo.completeBaseName() + "32_n.png", "png");
     const CharListRecItem* charlists = (const CharListRecItem*)(contents.constData() + header.charListOffset);
     const CharListRecItem* charlistsEnd = (const CharListRecItem*)(contents.constData() + header.sizeTableOffset);
-    QFile charmapfile(fileinfo.path() + "/" + fileinfo.completeBaseName() + "_charmap.txt");
+    QFile charmapfile(fileinfo.path() + "/" + fileinfo.completeBaseName() + "_charmap2.txt");
     charmapfile.open(QFile::WriteOnly);
     QByteArray listbuf;
     while (charlists != charlistsEnd) {
@@ -266,6 +266,7 @@ void TMainFrm::onOpenFFUClicked()
                 listbuf.append((char*)&wr, sizeof(wr));
             }
         }
+        listbuf.append("\r\n");
         charlists++;
     }
     charmapfile.write(listbuf);
@@ -274,7 +275,7 @@ void TMainFrm::onOpenFFUClicked()
 
 }
 
-
+// without FFU object. only append. without resort on charlist.
 void TMainFrm::onImportRenderedImageClicked()
 {
     if (fLastFFUFilename.isEmpty()) {
@@ -295,7 +296,7 @@ void TMainFrm::onImportRenderedImageClicked()
         return;
     }
     PathSetting.LastGlyphMatrixFolder = QFileInfo(pngfilename).path();
-    QString charlistfilename = QFileDialog::getOpenFileName(this, tr("Open Charlist File"), PathSetting.LastCharListFolder, "txt Files (*.txt);;All Files (*.*)", 0, 0);
+    QString charlistfilename = QFileDialog::getOpenFileName(this, tr("Open Appended Charlist File"), PathSetting.LastCharListFolder, "txt Files (*.txt);;All Files (*.*)", 0, 0);
     if (charlistfilename.isEmpty()) {
         return;
     }
@@ -329,7 +330,8 @@ void TMainFrm::onImportRenderedImageClicked()
     while (charlist < charlistend) {
         // read chars
         unsigned short w = *charlist;
-        if (IsFullShiftJISLeadingByte(w)) {
+        // TODO: patch eboot to get more encoding space
+        if (IsXORShiftJISLeadingByte(w)) {
             // TODO: bounds check
             unsigned char c = charlist[1];
             // need reverse endian
@@ -534,7 +536,7 @@ void TMainFrm::onRebuildKanjiPartClicked()
         return;
     }
     PathSetting.LastGlyphMatrixFolder = QFileInfo(pngfilename).path();
-    QString charlistfilename = QFileDialog::getOpenFileName(this, tr("Open Charlist File"), PathSetting.LastCharListFolder, "txt Files (*.txt);;All Files (*.*)", 0, 0);
+    QString charlistfilename = QFileDialog::getOpenFileName(this, tr("Open Free Hanzi Charlist File"), PathSetting.LastCharListFolder, "txt Files (*.txt);;All Files (*.*)", 0, 0);
     if (charlistfilename.isEmpty()) {
         return;
     }
@@ -701,6 +703,7 @@ void TMainFrm::onStringEncodingConvClicked()
 
     QMetaObject::invokeMethod(converterfrm, "loadDebugTables"); // Qt::QueuedConnection
 
+    converterfrm->setAttribute(Qt::WA_DeleteOnClose);
     converterfrm->show();
 }
 
@@ -807,6 +810,19 @@ void TMainFrm::PopupErrorHint(const QString& title, const QString& content)
     msgBox.setStandardButtons(QMessageBox::Ok);
     msgBox.setDefaultButton(QMessageBox::Ok);
     msgBox.exec();
+}
+
+int TMainFrm::PopupQuestion( const QString& title, const QString& content )
+{
+    QMessageBox msgBox;
+    msgBox.setText(title);
+    msgBox.setInformativeText(content);
+    msgBox.setIcon(QMessageBox::Question);
+    msgBox.setWindowIcon(this->windowIcon());
+    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    msgBox.setDefaultButton(QMessageBox::Yes);
+    int ret = msgBox.exec();
+    return ret;
 }
 
 //////////////////////////////////////////////////////////////////////////

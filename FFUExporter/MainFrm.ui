@@ -198,6 +198,8 @@
     </property>
     <addaction name="actionGenerateFakeSJISCode"/>
     <addaction name="actionGBINtoExcel"/>
+    <addaction name="actionExtractDatabaseString"/>
+    <addaction name="actionMergeDatabaseFolder"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_Tools"/>
@@ -345,13 +347,37 @@
   <action name="actionGBINtoExcel">
    <property name="icon">
     <iconset resource="FFUExporter.qrc">
-     <normaloff>:/MainFrm/PpsDES/16x16-tango/document.png</normaloff>:/MainFrm/PpsDES/16x16-tango/document.png</iconset>
+     <normaloff>:/MainFrm/PpsDES/24x24-vimix/mimetypes/spreadsheet.png</normaloff>:/MainFrm/PpsDES/24x24-vimix/mimetypes/spreadsheet.png</iconset>
    </property>
    <property name="text">
     <string>GBIN to Excel</string>
    </property>
    <property name="toolTip">
     <string>Export GBIN to Excel</string>
+   </property>
+  </action>
+  <action name="actionExtractDatabaseString">
+   <property name="icon">
+    <iconset resource="FFUExporter.qrc">
+     <normaloff>:/MainFrm/PpsDES/24x24-tango/document-print.png</normaloff>:/MainFrm/PpsDES/24x24-tango/document-print.png</iconset>
+   </property>
+   <property name="text">
+    <string>Extract database string</string>
+   </property>
+   <property name="toolTip">
+    <string>Extract strings from GBIN &amp; GSTR files</string>
+   </property>
+  </action>
+  <action name="actionMergeDatabaseFolder">
+   <property name="icon">
+    <iconset resource="FFUExporter.qrc">
+     <normaloff>:/MainFrm/PpsDES/16x16-tango/mail-attachment.png</normaloff>:/MainFrm/PpsDES/16x16-tango/mail-attachment.png</iconset>
+   </property>
+   <property name="text">
+    <string>Merge database Folder</string>
+   </property>
+   <property name="toolTip">
+    <string>Merge database Folder and Localized String</string>
    </property>
   </action>
  </widget>
@@ -488,6 +514,38 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionExtractDatabaseString</sender>
+   <signal>triggered()</signal>
+   <receiver>TMainFrm</receiver>
+   <slot>onExtractDatabasesStringsClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>459</x>
+     <y>343</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionMergeDatabaseFolder</sender>
+   <signal>triggered()</signal>
+   <receiver>TMainFrm</receiver>
+   <slot>onMergeDatabaseFolderClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>459</x>
+     <y>343</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>onOpenFFUClicked()</slot>
@@ -498,5 +556,7 @@
   <slot>onGBINConvertClicked()</slot>
   <slot>onExtractScriptsStringsClicked()</slot>
   <slot>onGBIN2ExcelClicked()</slot>
+  <slot>onExtractDatabasesStringsClicked()</slot>
+  <slot>onMergeDatabaseFolderClicked()</slot>
  </slots>
 </ui>

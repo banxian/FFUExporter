@@ -8,6 +8,9 @@ namespace Ui {
     class TMainFrm;
 }
 
+class GBINStore;
+class TEncodingConvFrm;
+
 class TMainFrm : public QMainWindow {
     Q_OBJECT
 private:
@@ -27,6 +30,8 @@ private:
     //void GenerateOriginalSchemeFromStore(const RsrcStore& store, const std::string& inputpath);
     //void MergeLocalizedSchemeToStore(const std::string& schemepath, RsrcStore& store);
     void PopupErrorHint(const QString& title, const QString& content);
+    int PopupQuestion(const QString& title, const QString& content);
+    void ImportCHSTextToGBINStore( GBINStore &store, const QString& utf16filename, TEncodingConvFrm* conv );
 
 private slots:
     void onOpenFFUClicked();
@@ -37,6 +42,8 @@ private slots:
     void onGBINConvertClicked();
     void onExtractScriptsStringsClicked();
     void onGBIN2ExcelClicked();
+    void onExtractDatabasesStringsClicked();
+    void onMergeDatabaseFolderClicked();
 
 public slots:
     void writeLog(QString content, TLogType logtype = ltMessage);

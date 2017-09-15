@@ -14,6 +14,8 @@ typedef struct tagPathRecItem {
     QString LastImportFolder;
     QString LastScriptsFolder;
     QString LastCHSScriptsFolder;
+    QString LastDatabasesFolder;
+    QString LastCHSDatabasesFolder;
     int LastSelectedItemIndex;
 } TPathRecItem;
 

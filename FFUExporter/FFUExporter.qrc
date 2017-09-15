@@ -52,5 +52,11 @@
         <file>PpsDES/24x24-gnome/folder_tar.png</file>
         <file>PpsDES/24x24-unofficetango/folder_tar.png</file>
         <file>PpsDES/24x24-unofficetango/gnome-mime-application-msword.png</file>
+        <file>PpsDES/24x24-vimix/apps/eom.png</file>
+        <file>PpsDES/24x24-vimix/apps/fonts.png</file>
+        <file>PpsDES/24x24-vimix/categories/gnome-applications.png</file>
+        <file>PpsDES/24x24-vimix/categories/gnome-util.png</file>
+        <file>PpsDES/24x24-vimix/devices/xfce-printer.png</file>
+        <file>PpsDES/24x24-vimix/mimetypes/spreadsheet.png</file>
     </qresource>
 </RCC>

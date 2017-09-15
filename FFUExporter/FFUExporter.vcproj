@@ -46,7 +46,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="-Zm200 -w34100 -w34189 -w34100 -w34189"
 				Optimization="4"
-				AdditionalIncludeDirectories="&quot;.\tmp&quot;;&quot;$(QTDIR)\include&quot;;&quot;$(QTDIR)\include\QtCore&quot;;&quot;$(QTDIR)\include\QtGui&quot;;&quot;$(QTDIR)\include\QtXml&quot;;&quot;.&quot;;&quot;.\..\FvQKOLLite&quot;;&quot;.\LibMUIMaker&quot;;&quot;.\tmp\moc\$(ConfigurationName)&quot;;G:\root\git\qt\qt\src\3rdparty"
+				AdditionalIncludeDirectories="&quot;.\tmp&quot;;&quot;$(QTDIR)\include&quot;;&quot;$(QTDIR)\include\QtCore&quot;;&quot;$(QTDIR)\include\QtGui&quot;;&quot;.&quot;;&quot;.\..\FvQKOLLite&quot;;&quot;.\LibMUIMaker&quot;;&quot;.\tmp\moc\$(ConfigurationName)&quot;;G:\root\git\qt\qt\src\3rdparty;&quot;$(QTDIR)\include\ActiveQt&quot;"
 				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,QT_LARGEFILE_SUPPORT,QT_DLL,QT_GUI_LIB,QT_CORE_LIB,QT_THREAD_SUPPORT"
 				GeneratePreprocessedFile="0"
 				ExceptionHandling="1"
@@ -73,7 +73,7 @@
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="true"
 				AdditionalOptions="&quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot; &quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot;"
-				AdditionalDependencies="QtCored4.lib QtGuid4.lib qtmaind.lib"
+				AdditionalDependencies="QtCored4.lib QtGuid4.lib qtmaind.lib QAxContainerd.lib"
 				OutputFile="$(OutDir)\$(ProjectName)_d.exe"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="&quot;$(QTDIR)\lib&quot;;&quot;$(ProjectDir)\PpsDES&quot;"
@@ -134,7 +134,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="-Zm200 -w34100 -w34189 -w34100 -w34189"
 				Optimization="2"
-				AdditionalIncludeDirectories="&quot;.\tmp&quot;;&quot;$(QTDIR)\include&quot;;&quot;$(QTDIR)\include\QtCore&quot;;&quot;$(QTDIR)\include\QtGui&quot;;&quot;$(QTDIR)\include\QtXml&quot;;&quot;.&quot;;&quot;.\..\FvQKOLLite&quot;;&quot;.\LibMUIMaker&quot;;&quot;.\tmp\moc\$(ConfigurationName)&quot;;G:\root\git\qt\qt\src\3rdparty"
+				AdditionalIncludeDirectories="&quot;.\tmp&quot;;&quot;$(QTDIR)\include&quot;;&quot;$(QTDIR)\include\QtCore&quot;;&quot;$(QTDIR)\include\QtGui&quot;;&quot;.&quot;;&quot;.\..\FvQKOLLite&quot;;&quot;.\LibMUIMaker&quot;;&quot;.\tmp\moc\$(ConfigurationName)&quot;;G:\root\git\qt\qt\src\3rdparty;&quot;$(QTDIR)\include\ActiveQt&quot;"
 				PreprocessorDefinitions="QT_NO_DEBUG,NDEBUG,_WINDOWS,UNICODE,WIN32,QT_LARGEFILE_SUPPORT,QT_DLL,QT_NO_DEBUG,QT_GUI_LIB,QT_CORE_LIB,QT_THREAD_SUPPORT,NDEBUG"
 				GeneratePreprocessedFile="0"
 				ExceptionHandling="1"
@@ -161,7 +161,7 @@
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="true"
 				AdditionalOptions="&quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot; &quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot;"
-				AdditionalDependencies="QtCore4.lib QtGui4.lib qtmain.lib"
+				AdditionalDependencies="QtCore4.lib QtGui4.lib qtmain.lib QAxContainer.lib"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="&quot;$(QTDIR)\lib&quot;;&quot;$(ProjectDir)\PpsDES&quot;"
@@ -222,7 +222,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="-Zm200 -w34100 -w34189 -w34100 -w34189"
 				Optimization="2"
-				AdditionalIncludeDirectories="&quot;.\tmp&quot;;&quot;$(QTDIR)\include&quot;;&quot;$(QTDIR)\include\QtCore&quot;;&quot;$(QTDIR)\include\QtGui&quot;;&quot;$(QTDIR)\include\QtXml&quot;;&quot;.&quot;;&quot;.\..\FvQKOLLite&quot;;&quot;.\LibMUIMaker&quot;;&quot;.\tmp\moc\$(ConfigurationName)&quot;;G:\root\git\qt\qt\src\3rdparty"
+				AdditionalIncludeDirectories="&quot;.\tmp&quot;;&quot;$(QTDIR)\include&quot;;&quot;$(QTDIR)\include\QtCore&quot;;&quot;$(QTDIR)\include\QtGui&quot;;&quot;.&quot;;&quot;.\..\FvQKOLLite&quot;;&quot;.\LibMUIMaker&quot;;&quot;.\tmp\moc\$(ConfigurationName)&quot;;G:\root\git\qt\qt\src\3rdparty;&quot;$(QTDIR)\include\ActiveQt&quot;"
 				PreprocessorDefinitions="QT_NO_DEBUG_OUTPUT;QT_NO_DEBUG;NDEBUG;SHIP_BUILD;_WINDOWS;UNICODE;WIN32;QT_LARGEFILE_SUPPORT;QT_DLL;QT_GUI_LIB;QT_CORE_LIB;QT_THREAD_SUPPORT"
 				GeneratePreprocessedFile="0"
 				ExceptionHandling="1"
@@ -249,7 +249,7 @@
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="true"
 				AdditionalOptions="&quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot; &quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot;"
-				AdditionalDependencies="QtCore4.lib QtGui4.lib qtmain.lib"
+				AdditionalDependencies="QtCore4.lib QtGui4.lib qtmain.lib QAxContainer.lib"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="&quot;$(QTDIR)\lib&quot;;&quot;$(ProjectDir)\PpsDES&quot;"
@@ -319,6 +319,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MainUntExchange.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\STCM2Obj.cpp"
 				>
 			</File>
@@ -353,7 +357,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing EncodingConvUnt.h..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\tmp\moc\$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT &quot;-I.\tmp&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I.&quot; &quot;-I.\..\FvQKOLLite&quot; &quot;-I.\LibMUIMaker&quot; &quot;-I.\tmp\moc\$(ConfigurationName)\.&quot; &quot;-IG:\root\git\qt\qt\src\3rdparty&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\tmp\moc\$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT  &quot;-I.\tmp&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I.&quot; &quot;-I.\..\FvQKOLLite&quot; &quot;-I.\LibMUIMaker&quot; &quot;-I.\tmp\moc\$(ConfigurationName)\.&quot; &quot;-IG:\root\git\qt\qt\src\3rdparty&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;.\tmp\moc\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -364,7 +368,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing EncodingConvUnt.h..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\tmp\moc\$(ConfigurationName)\moc_$(InputName).cpp&quot;  -DQT_NO_DEBUG -DNDEBUG -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT &quot;-I.\tmp&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I.&quot; &quot;-I.\..\FvQKOLLite&quot; &quot;-I.\LibMUIMaker&quot; &quot;-I.\tmp\moc\$(ConfigurationName)\.&quot; &quot;-IG:\root\git\qt\qt\src\3rdparty&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\tmp\moc\$(ConfigurationName)\moc_$(InputName).cpp&quot;  -DQT_NO_DEBUG -DNDEBUG -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT  &quot;-I.\tmp&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I.&quot; &quot;-I.\..\FvQKOLLite&quot; &quot;-I.\LibMUIMaker&quot; &quot;-I.\tmp\moc\$(ConfigurationName)\.&quot; &quot;-IG:\root\git\qt\qt\src\3rdparty&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;.\tmp\moc\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -375,7 +379,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing EncodingConvUnt.h..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\tmp\moc\$(ConfigurationName)\moc_$(InputName).cpp&quot;  -DQT_NO_DEBUG_OUTPUT -DQT_NO_DEBUG -DNDEBUG -DSHIP_BUILD -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT &quot;-I.\tmp&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I.&quot; &quot;-I.\..\FvQKOLLite&quot; &quot;-I.\LibMUIMaker&quot; &quot;-I.\tmp\moc\$(ConfigurationName)\.&quot; &quot;-IG:\root\git\qt\qt\src\3rdparty&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\tmp\moc\$(ConfigurationName)\moc_$(InputName).cpp&quot;  -DQT_NO_DEBUG_OUTPUT -DQT_NO_DEBUG -DNDEBUG -DSHIP_BUILD -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT  &quot;-I.\tmp&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I.&quot; &quot;-I.\..\FvQKOLLite&quot; &quot;-I.\LibMUIMaker&quot; &quot;-I.\tmp\moc\$(ConfigurationName)\.&quot; &quot;-IG:\root\git\qt\qt\src\3rdparty&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;.\tmp\moc\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -402,7 +406,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing MainUnt.h..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\tmp\moc\$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT &quot;-I.\tmp&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I.&quot; &quot;-I.\..\FvQKOLLite&quot; &quot;-I.\LibMUIMaker&quot; &quot;-I.\tmp\moc\$(ConfigurationName)\.&quot; &quot;-IG:\root\git\qt\qt\src\3rdparty&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\tmp\moc\$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT  &quot;-I.\tmp&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I.&quot; &quot;-I.\..\FvQKOLLite&quot; &quot;-I.\LibMUIMaker&quot; &quot;-I.\tmp\moc\$(ConfigurationName)\.&quot; &quot;-IG:\root\git\qt\qt\src\3rdparty&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;.\tmp\moc\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -413,7 +417,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing MainUnt.h..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\tmp\moc\$(ConfigurationName)\moc_$(InputName).cpp&quot;  -DQT_NO_DEBUG -DNDEBUG -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT &quot;-I.\tmp&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I.&quot; &quot;-I.\..\FvQKOLLite&quot; &quot;-I.\LibMUIMaker&quot; &quot;-I.\tmp\moc\$(ConfigurationName)\.&quot; &quot;-IG:\root\git\qt\qt\src\3rdparty&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\tmp\moc\$(ConfigurationName)\moc_$(InputName).cpp&quot;  -DQT_NO_DEBUG -DNDEBUG -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT  &quot;-I.\tmp&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I.&quot; &quot;-I.\..\FvQKOLLite&quot; &quot;-I.\LibMUIMaker&quot; &quot;-I.\tmp\moc\$(ConfigurationName)\.&quot; &quot;-IG:\root\git\qt\qt\src\3rdparty&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;.\tmp\moc\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -424,7 +428,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing MainUnt.h..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\tmp\moc\$(ConfigurationName)\moc_$(InputName).cpp&quot;  -DQT_NO_DEBUG_OUTPUT -DQT_NO_DEBUG -DNDEBUG -DSHIP_BUILD -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT  &quot;-I.\tmp&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I.&quot; &quot;-I.\..\FvQKOLLite&quot; &quot;-I.\LibMUIMaker&quot; &quot;-I.\tmp\moc\$(ConfigurationName)\.&quot; &quot;-IG:\root\git\qt\qt\src\3rdparty&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\tmp\moc\$(ConfigurationName)\moc_$(InputName).cpp&quot;  -DQT_NO_DEBUG_OUTPUT -DQT_NO_DEBUG -DNDEBUG -DSHIP_BUILD -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT  &quot;-I.\tmp&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I.&quot; &quot;-I.\..\FvQKOLLite&quot; &quot;-I.\LibMUIMaker&quot; &quot;-I.\tmp\moc\$(ConfigurationName)\.&quot; &quot;-IG:\root\git\qt\qt\src\3rdparty&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;.\tmp\moc\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -1022,7 +1026,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\PpsDES\24x24-gnome\document.png"
+				RelativePath=".\PpsDES\16x16-tango\document.png"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -1050,7 +1054,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\PpsDES\16x16-tango\document.png"
+				RelativePath=".\PpsDES\24x24-gnome\document.png"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -1246,7 +1250,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\PpsDES\16x16-tango\emblem-unreadable.png"
+				RelativePath=".\PpsDES\24x24-tango\emblem-unreadable.png"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -1274,7 +1278,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\PpsDES\24x24-tango\emblem-unreadable.png"
+				RelativePath=".\PpsDES\16x16-tango\emblem-unreadable.png"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -1507,7 +1511,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\PpsDES\24x24-gnome\folder_tar.png"
+				RelativePath=".\PpsDES\24x24-unofficetango\folder_tar.png"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -1535,7 +1539,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\PpsDES\24x24-unofficetango\folder_tar.png"
+				RelativePath=".\PpsDES\24x24-gnome\folder_tar.png"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"

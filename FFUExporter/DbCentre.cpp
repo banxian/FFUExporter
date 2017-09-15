@@ -20,6 +20,8 @@ void LoadAppSettings( void )
     PathSetting.LastImportFolder = settings.value("Path/LastImportFolder", "").toString();
     PathSetting.LastScriptsFolder = settings.value("Path/LastScriptsFolder", "").toString();
     PathSetting.LastCHSScriptsFolder = settings.value("Path/LastCHSScriptsFolder", "").toString();
+    PathSetting.LastDatabasesFolder = settings.value("Path/LastDatabasesFolder", "").toString();
+    PathSetting.LastCHSDatabasesFolder = settings.value("Path/LastCHSDatabasesFolder", "").toString();
     PathSetting.LastSelectedItemIndex = settings.value("Path/LastSelectedItemIndex", 0).toInt();
 
     StateSetting.WindowMaxium = settings.value("State/WindowMaxium", true).toBool();
@@ -46,6 +48,8 @@ void SaveAppSettings( void )
     settings.setValue("LastImportFolder", PathSetting.LastImportFolder);
     settings.setValue("LastScriptsFolder", PathSetting.LastScriptsFolder);
     settings.setValue("LastCHSScriptsFolder", PathSetting.LastCHSScriptsFolder);
+    settings.setValue("LastDatabasesFolder", PathSetting.LastDatabasesFolder);
+    settings.setValue("LastCHSDatabasesFolder", PathSetting.LastCHSDatabasesFolder);
     settings.setValue("LastSelectedItemIndex", PathSetting.LastSelectedItemIndex);
     settings.endGroup();
 

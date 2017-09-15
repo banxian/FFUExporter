@@ -45,13 +45,17 @@ protected:
 private:
     S2312GlyphIndexMap fS2312_to_GlyphIndex;
     Uni2S2312Map fUni_to_S2312;
+    unsigned short fS2312_to_Uni[256+128*256]; // ascii + halfwidth katanaka + symbols(sjis) + hanzi(s2312). have some gaps but I don't care
 private:
     void LoadTables(const QString& s2312file, const QString& imagecharfile, const QString& ffucharmapfile);
+    void BuildReverseLookupTable();
     int __cdecl logprintf(const char * _Format, ...);
     void AddLog(QString content, TLogType logtype = ltMessage);
+    void ImportCHSTextToStore( STCM2Store &store, const QString& utf16filename );
+public:
     QByteArray UnicodeStrToShift2312(const QString& str);
     std::string UnicodeStrToShift2312Str(const QString& str);
-    void ImportCHSTextToStore( STCM2Store &store, const QString& utf16filename );
+    QString Shift2312ToUnicode(const QByteArray& str);
 
 signals:
     void logStored(QString content, TLogType logtype);

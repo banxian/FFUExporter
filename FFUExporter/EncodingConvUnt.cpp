@@ -83,26 +83,27 @@ void TEncodingConvFrm::onStringValueModified()
 void TEncodingConvFrm::LoadTables( const QString& s2312filename, const QString& imagecharfilename, const QString& ffucharmapfilename )
 {
     // TODO: build a custom QTextCodec
-    QFile charlistfile(s2312filename);
-    charlistfile.open(QFile::ReadOnly);
-    QByteArray charlistsbuf = charlistfile.readAll();
-    charlistfile.close();
+    QFile s2312charlistfile(s2312filename); // charlist for shift2312 FFU. only contains hanzi parts. generate by 010Script. lead byte 88..9F,E0..FC b2 40..7E,80..FC
+    s2312charlistfile.open(QFile::ReadOnly);
+    QByteArray scharlistsbuf = s2312charlistfile.readAll();
+    s2312charlistfile.close();
 
     // TODO: shiftjis vs gbk
     int s2312glyphcount = 0;
-    const unsigned char* charlist = (const unsigned char*)charlistsbuf.constData();
-    const unsigned char* charlistend = (const unsigned char*)charlistsbuf.constData() + charlistsbuf.size();
+    const unsigned char* charlist = (const unsigned char*)scharlistsbuf.constData();
+    const unsigned char* charlistend = (const unsigned char*)scharlistsbuf.constData() + scharlistsbuf.size();
     std::vector<unsigned __int16> newchars;
+    // freeshift2312.txt by 010Script
     while (charlist < charlistend) {
         // read chars
         unsigned short w = *charlist;
         if (IsXORShiftJISLeadingByte(w)) {
             // TODO: bounds check
-            unsigned char c = charlist[1];
+            unsigned char b2 = charlist[1];
             charlist += 2;
-            if (c >= 0x40 && c <= 0xFC && c != 0x7F) {
+            if (b2 >= 0x40 && b2 <= 0xFC && b2 != 0x7F) {
                 // need reverse endian
-                w = w << 8 | c;
+                w = w << 8 | b2;
                 newchars.push_back(w);
                 fS2312_to_GlyphIndex.insert(make_pair(w, s2312glyphcount));
             } else {
@@ -121,14 +122,15 @@ void TEncodingConvFrm::LoadTables( const QString& s2312filename, const QString& 
         s2312glyphcount++;
     }
 
-    QFile pslistfile(imagecharfilename);
+    QFile pslistfile(imagecharfilename); // source list use to produce shift2312 ffu. every character is correspond to ffu's glyph.
     pslistfile.open(QFile::ReadOnly);
-    QByteArray pslistsbuf = pslistfile.readAll();
+    QByteArray pslistsbuf = pslistfile.readAll(); // unicode
     pslistfile.close();
 
     int psglyphcount = 0;
     const unsigned short* pslist = (const unsigned short*)pslistsbuf.constData();
     const unsigned short* pslistend = (const unsigned short*)(pslistsbuf.constData() + pslistsbuf.size());
+    // gb2312 + some extended standardized hanzi table
     while (pslist < pslistend) {
         unsigned short w = *pslist++;
         if (w == 0xFEFF || w == '\n' || w == '\r') {
@@ -144,7 +146,7 @@ void TEncodingConvFrm::LoadTables( const QString& s2312filename, const QString& 
         psglyphcount++;
     }
 
-    QFile ffucharlistfile(ffucharmapfilename);
+    QFile ffucharlistfile(ffucharmapfilename); // charlist file from FFU charlist records. contains ascii, half-width katakana and full-width glyphs
     ffucharlistfile.open(QFile::ReadOnly);
     QByteArray charlistsbuf2 = ffucharlistfile.readAll();
     ffucharlistfile.close();
@@ -160,19 +162,20 @@ void TEncodingConvFrm::LoadTables( const QString& s2312filename, const QString& 
     int ffunonkanjicount = 0;
     const unsigned char* charlist2 = (const unsigned char*)charlistsbuf2.constData();
     const unsigned char* charlist2end = (const unsigned char*)charlistsbuf2.constData() + charlistsbuf2.size();
+    // only non-kanji part is usefull(lead byte < 0x88)
     while (charlist2 < charlist2end) {
         // read chars
         QByteArray ansi;
         unsigned short w = *charlist2;
         if (IsXORShiftJISLeadingByte(w)) {
             // TODO: bounds check
-            unsigned char c2 = charlist2[1];
+            unsigned char b2 = charlist2[1];
             charlist2 += 2;
-            if (c2 >= 0x40 && c2 <= 0xFC && c2 != 0x7F) {
+            if (b2 >= 0x40 && b2 <= 0xFC && b2 != 0x7F) {
                 // need reverse endian
                 ansi.append(w);
-                ansi.append(c2);
-                w = w << 8 | c2;
+                ansi.append(b2);
+                w = w << 8 | b2;
             } else {
                 // TODO: bypass glyph
                 break;
@@ -200,9 +203,10 @@ void TEncodingConvFrm::LoadTables( const QString& s2312filename, const QString& 
             if (it == fUni_to_S2312.end()) {
                 fUni_to_S2312.insert(make_pair(uc, item));
             } else {
-                it->second.isS2312 = true;
+                it->second.isSJIS = true;
                 it->second.sjiscode = w;
                 if (it->second.singlebyte != item.singlebyte) {
+                    // should never got here.
                     AddLog(QString("singlebyte flag mismatched on U+%1 (%2) from ANSI %3" ).arg(uc, 4, 16, QLatin1Char('0')).arg(QChar(uc)).arg(w, 4, 16, QLatin1Char('0')), ltError);
                 }
             }
@@ -216,6 +220,28 @@ void TEncodingConvFrm::LoadTables( const QString& s2312filename, const QString& 
     ui->s2312mapcountView->setText(QString("%1").arg(s2312glyphcount));
     ui->psmapcountView->setText(QString("%1").arg(psglyphcount));
     ui->stdglyphcountView->setText(QString("%1").arg(ffunonkanjicount));
+
+    memset(fS2312_to_Uni, 0xFF, sizeof(fS2312_to_Uni));
+    for (Uni2S2312Map::const_iterator it = fUni_to_S2312.begin(); it != fUni_to_S2312.end(); it++) {
+        if (it->second.singlebyte) {
+            // 0..255
+            fS2312_to_Uni[it->second.sjiscode] = it->first;
+        } else if (it->second.isS2312) {
+            // first 2312
+            int index = it->second.s2312code - 0x8000 + 256;
+            fS2312_to_Uni[index] = it->first;
+        } else if (it->second.isSJIS) {
+            int index = it->second.sjiscode - 0x8000 + 256;
+            if (fS2312_to_Uni[index] == 0xFFFF) {
+                fS2312_to_Uni[index] = it->first;
+            } else {
+                // overlap
+            }
+        } else {
+            // empty?!
+            AddLog(QString("empty record found on U+%1 (%2)" ).arg(it->first, 4, 16, QLatin1Char('0')).arg(QChar(it->first)), ltError);
+        }
+    }
 }
 
 void TEncodingConvFrm::onUTF16toShift2312Clicked()
@@ -329,6 +355,42 @@ std::string TEncodingConvFrm::UnicodeStrToShift2312Str( const QString& str )
     std::string ret;
     ret.assign(ba.constData(), ba.size());
     return ret;
+}
+
+QString TEncodingConvFrm::Shift2312ToUnicode( const QByteArray& str )
+{
+    QString unistr;
+    // TODO: use array instead map
+    const unsigned char* charptr = (const unsigned char*)str.constData();
+    const unsigned char* charptrend = (const unsigned char*)str.constData() + str.size();
+
+    while (charptr < charptrend) {
+        // read chars
+        unsigned short w = *charptr;
+        if (IsXORShiftJISLeadingByte(w)) {
+            // TODO: bounds check
+            unsigned char c = charptr[1];
+            charptr += 2;
+            if (c >= 0x40 && c <= 0xFC && c != 0x7F) {
+                // need reverse endian
+                w = w << 8 | c;
+                //newchars.push_back(w);
+                int index = w - 0x8000 + 256;
+                unistr.append((fS2312_to_Uni[index]));
+            } else {
+                // error
+                break;
+            }
+        } else {
+            charptr++;
+            if (w < 0x100) {
+                unistr.append((fS2312_to_Uni[w]));
+            } else {
+                // bug?!
+            }
+        }
+    }
+    return unistr;
 }
 
 void TEncodingConvFrm::onMergeSTCM2Clicked()
