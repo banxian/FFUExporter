@@ -8,7 +8,7 @@
 enum GBINType
 {
     gtULONG = 0x0,
-    gtUINT8 = 0x1,
+    gtUINT8 = 0x1, // or byte[]
     gtUINT16 = 0x2,
     gtFLOAT = 0x3,
     gtTYPE4 = 0x4,
@@ -23,10 +23,10 @@ enum GBINType
 struct GBINHeaderFooter
 {
     char magic[4];
-    uint16_t field_04;
+    uint16_t field_04;  //1
     uint8_t endian_06;
     uint8_t field_07;
-    uint32_t field_08;
+    uint32_t field_08; //16
     uint32_t longsize;
     uint32_t flags;
     uint32_t struct_offset;

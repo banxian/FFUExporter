@@ -131,7 +131,7 @@ signed int func_gbin_normalize_endian(void *buf, size_t len, void *outheader)
 signed int func_gbin_to_big_endian(void *buf, size_t len)
 {
     // determinate GSTL|GSTB
-    bool isgstr = *(uint32_t *)buf == 'LTSG';
+    bool isgstr = *(uint32_t *)buf == 'LTSG' || *(uint32_t *)buf == 'BTSG'; // no need B?
 
     GBINHeaderFooter *header = (GBINHeaderFooter *)((char *)buf + (isgstr?0:(len - sizeof(GBINHeaderFooter))));
     unsigned char* buff = (uint8_t *)buf;
@@ -197,7 +197,7 @@ signed int func_gbin_to_big_endian(void *buf, size_t len)
 
 void func_swapendian_len(unsigned char *buf, int len)
 {
-    int lendiv = len >> 1;
+    int swapcount = len >> 1;
     int index = 0;
     if (len >> 1 > 0) {
         unsigned char* buftail = &buf[len];
@@ -207,7 +207,7 @@ void func_swapendian_len(unsigned char *buf, int len)
             unsigned char b3 = *(tail2 - 1);
             *(tail2 - 1) = *bufm;
             *bufm++ = b3;
-        } while (index < lendiv);
+        } while (index < swapcount);
     }
 }
 
@@ -500,7 +500,6 @@ bool GBINStore::SaveToBuffer( QByteArray& buf )
             int i = 0;
             for (GBINFieldDefineBundleVec::const_iterator fit = fFieldDefines.begin(); fit != fFieldDefines.end(); fit++, i++) {
                 if (fit->type == gtSTRING) {
-                    //buf.append((*it)[i].strrec);
                     StrOffsetMap::const_iterator sit = stroffmap.find((*it)[i].strrec);
                     if (sit == stroffmap.end()) {
                         (*it)[i].u32rec = strpos;
@@ -533,9 +532,7 @@ bool GBINStore::SaveToBuffer( QByteArray& buf )
     int fielddefsize = ((sizeof(GBINTypeDescriptor) * fFieldDefines.size() + 15)/16)*16;
     newheader.struct_count = fComplexRecords.size();
     newheader.types_count = fFieldDefines.size();
-    //recordsbuf.resize(recordsbufsize); // TODO: memset
-    //fieldbuf.resize(fielddefsize);
-    //stringtable.resize(stringtablesize);
+    newheader.string_count = stroffmap.size();
     paddingqbytearray(recordsbuf, recordsbufsize);
     paddingqbytearray(fieldbuf, fielddefsize);
     paddingqbytearray(stringtable, stringtablesize);
